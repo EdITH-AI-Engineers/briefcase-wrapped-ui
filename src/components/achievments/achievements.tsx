@@ -6,12 +6,12 @@ import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(SplitText);
 
-type WrappedIntroProps = {
+type WrappedAchievmentsProps = {
     user: { name: string };
     onComplete?: () => void;
 };
 
-export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
+export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             opacity: 0,
             duration: 0.7,
             ease: "power3.out",
-            stagger: 1.5,
+            stagger: 2,
         });
 
         tl.to(containerRef.current, {
@@ -46,7 +46,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             y: -40,
             duration: 0.6,
             ease: "power2.in",
-            delay: 0.8,
+            delay: 1.2,
         });
 
         tl.set(readyRef.current, { autoAlpha: 1 });
@@ -57,7 +57,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             opacity: 0,
             duration: 0.7,
             ease: "power3.out",
-            stagger: 1,
+            stagger: 1.2,
             delay: 1,
         });
 
@@ -87,30 +87,30 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
 
     return (
         <div
-            className="relative w-full h-screen bg-linear-to-r from-[#08a0e9] to-[#00c9ff]"
+            className="relative w-full h-screen bg-linear-to-r from-[#334454] to-[#282f3f]"
             style={{ perspective: "800px" }}
         >
             <div
                 ref={containerRef}
-                className="absolute inset-0 flex flex-col justify-center text-[#334454] text-left pl-32 pb-24"
+                className="absolute inset-0 flex flex-col justify-center text-[#f2f2f2] text-center"
             >
                 <p className="font-figtree font-extrabold text-7xl h-19">
-                    Hello {user.name.toLowerCase()}!
+                    3rd year looks like a blast!
                 </p>
                 <p className="font-figtree font-medium text-3xl">
-                    It&apos;s wrapped time!
+                    you have been active, i guess
                 </p>
             </div>
 
             <div
                 ref={readyRef}
-                className="absolute inset-0 flex flex-col justify-center text-[#334454] text-left pl-32 pb-24"
+                className="absolute inset-0 flex flex-col justify-center text-[#f2f2f2] text-center"
             >
                 <p className="font-figtree font-extrabold text-7xl h-19">
-                    you ready?
+                    Did you did well this year?
                 </p>
                 <p className="font-figtree font-medium text-3xl">
-                    Let&apos;s start!
+                    Let&apos;s find out
                 </p>
             </div>
         </div>
