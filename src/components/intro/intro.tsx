@@ -2,7 +2,10 @@
 
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
+import { IntroArt } from "@/components/wrapped-shell/scene-art";
+import { BriefcaseLoader } from "./loader";
 
 gsap.registerPlugin(SplitText);
 
@@ -12,10 +15,12 @@ type WrappedIntroProps = {
 };
 
 export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
+    const [loaderDone, setLoaderDone] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!loaderDone) return;
         if (!containerRef.current || !readyRef.current) return;
 
         gsap.set(readyRef.current, { autoAlpha: 0 });
@@ -38,7 +43,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             opacity: 0,
             duration: 0.7,
             ease: "power3.out",
-            stagger: 1.5,
+            stagger: 1.2,
         });
 
         tl.to(containerRef.current, {
@@ -58,21 +63,13 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             duration: 0.7,
             ease: "power3.out",
             stagger: 1,
-            delay: 1,
-        });
-
-        tl.to(readyRef.current, {
-            opacity: 0,
-            y: -40,
-            duration: 1,
-            ease: "power2.in",
-            delay: 0.8,
+            delay: 0.6,
         });
 
         let completeDelay: gsap.core.Tween | null = null;
 
         tl.eventCallback("onComplete", () => {
-            completeDelay = gsap.delayedCall(1, () => {
+            completeDelay = gsap.delayedCall(1.6, () => {
                 onComplete?.();
             });
         });
@@ -83,36 +80,54 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             split.revert();
             split2.revert();
         };
-    }, [onComplete, user.name]);
+    }, [onComplete, user.name, loaderDone]);
 
     return (
-        <div
-            className="relative w-full h-screen bg-linear-to-r from-[#08a0e9] to-[#00c9ff]"
-            style={{ perspective: "800px" }}
-        >
-            <div
-                ref={containerRef}
-                className="absolute inset-0 flex flex-col justify-center text-[#334454] text-left pl-32 pb-24"
+        <div className="relative w-full h-screen">
+            <WrappedShell
+                sceneNumber="01"
+                sceneLabel="Intro"
+                marqueeText="Hello there  //  briefcase wrapped 2026  //  let's go"
+                variant="blue"
+                art={<IntroArt />}
             >
-                <p className="font-figtree font-extrabold text-7xl h-19">
-                    Hello {user.name.toLowerCase()}!
-                </p>
-                <p className="font-figtree font-medium text-3xl">
-                    It&apos;s wrapped time!
-                </p>
-            </div>
+                <div
+                    className="relative w-full h-full"
+                    style={{ perspective: "800px" }}
+                >
+                    <div
+                        ref={containerRef}
+                        className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
+                    >
+                        <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
+                            // 01 — Hello
+                        </p>
+                        <p className="font-figtree font-black text-[clamp(48px,8vw,112px)] leading-[0.95] tracking-tight">
+                            Hello {user.name.toLowerCase()}!
+                        </p>
+                        <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
+                            It&apos;s wrapped time!
+                        </p>
+                    </div>
 
-            <div
-                ref={readyRef}
-                className="absolute inset-0 flex flex-col justify-center text-[#334454] text-left pl-32 pb-24"
-            >
-                <p className="font-figtree font-extrabold text-7xl h-19">
-                    you ready?
-                </p>
-                <p className="font-figtree font-medium text-3xl">
-                    Let&apos;s start!
-                </p>
-            </div>
+                    <div
+                        ref={readyRef}
+                        className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
+                    >
+                        <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
+                            // 01 — Ready?
+                        </p>
+                        <p className="font-figtree font-black text-[clamp(48px,8vw,112px)] leading-[0.95] tracking-tight">
+                            you ready?
+                        </p>
+                        <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
+                            Let&apos;s start!
+                        </p>
+                    </div>
+                </div>
+            </WrappedShell>
+
+            {!loaderDone && <BriefcaseLoader onComplete={() => setLoaderDone(true)} />}
         </div>
     );
 }

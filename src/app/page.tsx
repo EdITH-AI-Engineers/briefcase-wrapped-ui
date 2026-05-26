@@ -1,25 +1,29 @@
 "use client"
 
 import { WrappedAchievments } from "@/components/achievments/achievements";
-import { SectionControl, type SectionName } from "@/components/glob/section-control";
+import { SectionControl, type SectionName } from "@/components/settings/section-control";
 import { WrappedIntro } from "@/components/intro/intro";
+import gsap from "gsap";
 import type { ComponentType } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { WrappedCompetencies } from "@/components/competencies/competencies";
+import { WrappedSkills } from "@/components/skills/skills";
+import { WrappedActionPlan } from "@/components/action-plan/action-plan";
+import { WrappedSummary } from "@/components/summary/summary";
 
 const sections: SectionName[] = [
   "intro",
   "achievements",
-  "overview",
   "competencies",
   "skills",
-  "action plan",
+  "actionPlan",
   "summary",
   "end",
 ];
 
 const user = {
   name: "John Doe",
-}
+};
 
 type SectionPanelProps = {
   section: SectionName;
@@ -30,30 +34,102 @@ type SectionPanelProps = {
 const sectionPanels: Partial<Record<SectionName, ComponentType<SectionPanelProps>>> = {
   intro: ({ user, onComplete }) => <WrappedIntro user={user} onComplete={onComplete} />,
   achievements: ({ user, onComplete }) => <WrappedAchievments user={user} onComplete={onComplete} />,
+  competencies: ({ user, onComplete }) => <WrappedCompetencies user={user} onComplete={onComplete} />,
+  skills: ({ user, onComplete }) => <WrappedSkills user={user} onComplete={onComplete} />,
+  actionPlan: ({ user, onComplete }) => <WrappedActionPlan user={user} onComplete={onComplete} />,
+  summary: ({ user, onComplete }) => <WrappedSummary user={user} onComplete={onComplete} />,
 };
 
+type LayerEntry = { key: number; section: SectionName };
+type PendingAnim = { key: number; direction: 1 | -1 } | null;
+
 export default function Home() {
+  const [layers, setLayers] = useState<LayerEntry[]>([{ key: 0, section: "intro" }]);
   const [selectedSection, setSelectedSection] = useState<SectionName>("intro");
 
-  function goToNextSection() {
-    const currentIndex = sections.indexOf(selectedSection);
-    const nextSection = sections[currentIndex + 1] ?? sections[currentIndex];
+  const selectedSectionRef = useRef<SectionName>("intro");
 
-    setSelectedSection(nextSection);
-  }
+  const keyCounterRef = useRef(1);
+  const layerRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const isSliding = useRef(false);
+  const pendingAnim = useRef<PendingAnim>(null);
 
-  const SelectedPanel = sectionPanels[selectedSection] ?? TempSectionPanel;
+  const goToSection = useCallback((newSection: SectionName, bypassGuard = false) => {
+    if (isSliding.current && !bypassGuard) return;
+
+    const current = selectedSectionRef.current;
+    if (newSection === current) return;
+
+    const currentIndex = sections.indexOf(current);
+    const nextIndex = sections.indexOf(newSection);
+    const direction: 1 | -1 = nextIndex >= currentIndex ? 1 : -1;
+
+    const key = keyCounterRef.current++;
+    pendingAnim.current = { key, direction };
+    selectedSectionRef.current = newSection;
+
+    setLayers((prev) => [...prev, { key, section: newSection }]);
+    setSelectedSection(newSection);
+  }, []);
+
+  const goToNextSection = useCallback(() => {
+    const current = selectedSectionRef.current;
+    const currentIndex = sections.indexOf(current);
+    const next = sections[currentIndex + 1];
+    if (next) goToSection(next, true);
+  }, [goToSection]);
+
+  useEffect(() => {
+    const pending = pendingAnim.current;
+    if (!pending) return;
+
+    const el = layerRefs.current.get(pending.key);
+    if (!el) return;
+
+    pendingAnim.current = null;
+    isSliding.current = true;
+
+    const startX = pending.direction > 0 ? "100%" : "-100%";
+
+    gsap.fromTo(
+      el,
+      { x: startX },
+      {
+        x: 0,
+        duration: 0.65,
+        ease: "power3.inOut",
+        onComplete: () => {
+          isSliding.current = false;
+          setLayers((prev) => (prev.length > 1 ? [prev[prev.length - 1]] : prev));
+        },
+      },
+    );
+  }, [layers]);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#06131d]">
       <div className="absolute inset-0">
-        <SelectedPanel section={selectedSection} user={user} onComplete={goToNextSection} />
+        {layers.map((layer) => {
+          const Panel = sectionPanels[layer.section] ?? TempSectionPanel;
+          return (
+            <div
+              key={layer.key}
+              ref={(el) => {
+                if (el) layerRefs.current.set(layer.key, el);
+                else layerRefs.current.delete(layer.key);
+              }}
+              className="absolute inset-0"
+            >
+              <Panel section={layer.section} user={user} onComplete={goToNextSection} />
+            </div>
+          );
+        })}
       </div>
 
       <SectionControl
         sections={sections}
         selectedSection={selectedSection}
-        onSelectSection={setSelectedSection}
+        onSelectSection={goToSection}
       />
     </main>
   );
@@ -67,7 +143,7 @@ function TempSectionPanel({ section }: SectionPanelProps) {
           {section}
         </p>
         <h1 className="mt-4 font-figtree text-4xl font-semibold sm:text-5xl">
-          {section === "action plan" ? "Action plan" : section}
+          {section}
         </h1>
         <p className="mt-4 max-w-md text-base leading-7 text-white/70 sm:text-lg">
           This panel is ready to be replaced with the real section content.

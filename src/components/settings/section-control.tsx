@@ -7,10 +7,9 @@ import { useRef } from "react";
 export type SectionName =
     | "intro"
     | "achievements"
-    | "overview"
     | "competencies"
     | "skills"
-    | "action plan"
+    | "actionPlan"
     | "summary"
     | "end";
 

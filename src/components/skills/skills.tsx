@@ -4,30 +4,30 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
-import { AchievementsArt } from "@/components/wrapped-shell/scene-art";
+import { SkillsArt } from "@/components/wrapped-shell/scene-art";
 
 gsap.registerPlugin(SplitText);
 
-type WrappedAchievmentsProps = {
+type WrappedSkillsProps = {
     user: { name: string };
     onComplete?: () => void;
 };
 
-export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps) {
+export function WrappedSkills({ user, onComplete }: WrappedSkillsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const readyRef = useRef<HTMLDivElement>(null);
+    const container2_Ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current || !readyRef.current) return;
+        if (!containerRef.current || !container2_Ref.current) return;
 
-        gsap.set(readyRef.current, { autoAlpha: 0 });
+        gsap.set(container2_Ref.current, { autoAlpha: 0 });
 
         const split = SplitText.create(containerRef.current, {
             type: "lines, words",
             linesClass: "overflow-hidden",
         });
 
-        const split2 = SplitText.create(readyRef.current, {
+        const split2 = SplitText.create(container2_Ref.current, {
             type: "lines",
             linesClass: "overflow-hidden",
         });
@@ -51,7 +51,7 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             delay: 1.2,
         });
 
-        tl.set(readyRef.current, { autoAlpha: 1 });
+        tl.set(container2_Ref.current, { autoAlpha: 1 });
 
         tl.from(split2.lines, {
             rotationX: -90,
@@ -63,7 +63,7 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             delay: 1,
         });
 
-        tl.to(readyRef.current, {
+        tl.to(container2_Ref.current, {
             opacity: 0,
             y: -40,
             duration: 1,
@@ -89,11 +89,11 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
 
     return (
         <WrappedShell
-            sceneNumber="02"
-            sceneLabel="Achievements"
-            marqueeText="3rd year flex  //  badges unlocked  //  trophies +1"
-            variant="navy"
-            art={<AchievementsArt />}
+            sceneNumber="04"
+            sceneLabel="Skills"
+            marqueeText="365 days of growth  //  your stack  //  shipped"
+            variant="cream"
+            art={<SkillsArt />}
         >
             <div
                 className="relative w-full h-full"
@@ -101,31 +101,28 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             >
                 <div
                     ref={containerRef}
-                    className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
+                    className="absolute inset-0 flex flex-col justify-center items-center text-[#1a2230] text-center"
                 >
-                    <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 text-[#08a0e9]">
-                        // 02 — Receipts
+                    <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
+                        // 04 — The Stack
                     </p>
                     <p className="font-figtree font-black text-[clamp(40px,6.5vw,88px)] leading-[0.95] tracking-tight max-w-4xl">
-                        3rd year looks like a blast!
+                        You have learned a lot this year
                     </p>
                     <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
-                        you have been active, i guess
+                        You have spent 365 days improving yourself
                     </p>
                 </div>
 
                 <div
-                    ref={readyRef}
-                    className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
+                    ref={container2_Ref}
+                    className="absolute inset-0 flex flex-col justify-center items-center text-[#1a2230] text-center"
                 >
-                    <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 text-[#08a0e9]">
-                        // 02 — Verdict
+                    <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
+                        // 04 — Inventory
                     </p>
                     <p className="font-figtree font-black text-[clamp(40px,6.5vw,88px)] leading-[0.95] tracking-tight max-w-4xl">
-                        Did you did well this year?
-                    </p>
-                    <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
-                        Let&apos;s find out
+                        What did you built into your stack?
                     </p>
                 </div>
             </div>
