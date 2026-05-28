@@ -28,6 +28,12 @@ export function IntroArt() {
             gsap.to(".intro-floaty", {
                 y: -14, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true, stagger: 0.4,
             });
+            gsap.to(".intro-scribble", {
+                strokeDashoffset: -32,
+                duration: 1.4,
+                ease: "none",
+                repeat: -1,
+            });
         }, wrapRef);
         return () => ctx.revert();
     }, []);
@@ -54,11 +60,15 @@ export function IntroArt() {
             </g>
 
             <g className="intro-floaty">
-                <circle className="intro-pop" cx="1480" cy="180" r="58" fill="#0a2236" />
-                <text
-                    x="1480" y="195" textAnchor="middle"
-                    fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="34" fill="#f2f2f2"
-                >HI</text>
+                <path
+                    className="intro-scribble"
+                    d="M 1400 180 C 1395 130 1445 100 1495 110 C 1555 122 1580 170 1565 215 C 1548 255 1485 265 1440 245 C 1405 228 1395 205 1400 180 Z"
+                    fill="none"
+                    stroke="#0a2236"
+                    strokeWidth="6"
+                    strokeDasharray="3 14"
+                    strokeLinecap="round"
+                />
             </g>
 
             <g className="intro-floaty">

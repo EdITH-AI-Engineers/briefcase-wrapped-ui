@@ -11,13 +11,15 @@ gsap.registerPlugin(SplitText);
 type WrappedAchievmentsProps = {
     user: { name: string };
     onComplete?: () => void;
+    active?: boolean;
 };
 
-export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps) {
+export function WrappedAchievments({ user, onComplete, active = true }: WrappedAchievmentsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!active) return;
         if (!containerRef.current || !readyRef.current) return;
 
         gsap.set(readyRef.current, { autoAlpha: 0 });
@@ -42,6 +44,8 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             ease: "power3.out",
             stagger: 2,
         });
+
+        gsap.set(containerRef.current, { opacity: 1 });
 
         tl.to(containerRef.current, {
             opacity: 0,
@@ -85,7 +89,7 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             split.revert();
             split2.revert();
         };
-    }, [onComplete, user.name]);
+    }, [onComplete, user.name, active]);
 
     return (
         <WrappedShell
@@ -101,6 +105,7 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
             >
                 <div
                     ref={containerRef}
+                    style={{ opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
                 >
                     <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 text-[#08a0e9]">
@@ -116,6 +121,7 @@ export function WrappedAchievments({ user, onComplete }: WrappedAchievmentsProps
 
                 <div
                     ref={readyRef}
+                    style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
                 >
                     <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 text-[#08a0e9]">

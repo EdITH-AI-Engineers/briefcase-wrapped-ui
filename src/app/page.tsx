@@ -3,6 +3,7 @@
 import { WrappedAchievments } from "@/components/achievments/achievements";
 import { SectionControl, type SectionName } from "@/components/settings/section-control";
 import { WrappedIntro } from "@/components/intro/intro";
+import { BriefcaseLoader } from "@/components/intro/loader";
 import gsap from "gsap";
 import type { ComponentType } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -29,15 +30,16 @@ type SectionPanelProps = {
   section: SectionName;
   user: typeof user;
   onComplete?: () => void;
+  active?: boolean;
 };
 
 const sectionPanels: Partial<Record<SectionName, ComponentType<SectionPanelProps>>> = {
-  intro: ({ user, onComplete }) => <WrappedIntro user={user} onComplete={onComplete} />,
-  achievements: ({ user, onComplete }) => <WrappedAchievments user={user} onComplete={onComplete} />,
-  competencies: ({ user, onComplete }) => <WrappedCompetencies user={user} onComplete={onComplete} />,
-  skills: ({ user, onComplete }) => <WrappedSkills user={user} onComplete={onComplete} />,
-  actionPlan: ({ user, onComplete }) => <WrappedActionPlan user={user} onComplete={onComplete} />,
-  summary: ({ user, onComplete }) => <WrappedSummary user={user} onComplete={onComplete} />,
+  intro: ({ user, onComplete, active }) => <WrappedIntro user={user} onComplete={onComplete} active={active} />,
+  achievements: ({ user, onComplete, active }) => <WrappedAchievments user={user} onComplete={onComplete} active={active} />,
+  competencies: ({ user, onComplete, active }) => <WrappedCompetencies user={user} onComplete={onComplete} active={active} />,
+  skills: ({ user, onComplete, active }) => <WrappedSkills user={user} onComplete={onComplete} active={active} />,
+  actionPlan: ({ user, onComplete, active }) => <WrappedActionPlan user={user} onComplete={onComplete} active={active} />,
+  summary: ({ user, onComplete, active }) => <WrappedSummary user={user} onComplete={onComplete} active={active} />,
 };
 
 type LayerEntry = { key: number; section: SectionName };
@@ -46,6 +48,13 @@ type PendingAnim = { key: number; direction: 1 | -1 } | null;
 export default function Home() {
   const [layers, setLayers] = useState<LayerEntry[]>([{ key: 0, section: "intro" }]);
   const [selectedSection, setSelectedSection] = useState<SectionName>("intro");
+  const [activeKey, setActiveKey] = useState<number>(-1);
+  const [loaderDone, setLoaderDone] = useState(false);
+
+  const handleLoaderComplete = useCallback(() => {
+    setLoaderDone(true);
+    setActiveKey(0);
+  }, []);
 
   const selectedSectionRef = useRef<SectionName>("intro");
 
@@ -91,6 +100,8 @@ export default function Home() {
 
     const startX = pending.direction > 0 ? "100%" : "-100%";
 
+    const slidKey = pending.key;
+
     gsap.fromTo(
       el,
       { x: startX },
@@ -100,6 +111,7 @@ export default function Home() {
         ease: "power3.inOut",
         onComplete: () => {
           isSliding.current = false;
+          setActiveKey(slidKey);
           setLayers((prev) => (prev.length > 1 ? [prev[prev.length - 1]] : prev));
         },
       },
@@ -120,7 +132,12 @@ export default function Home() {
               }}
               className="absolute inset-0"
             >
-              <Panel section={layer.section} user={user} onComplete={goToNextSection} />
+              <Panel
+                section={layer.section}
+                user={user}
+                onComplete={goToNextSection}
+                active={layer.key === activeKey}
+              />
             </div>
           );
         })}
@@ -131,6 +148,8 @@ export default function Home() {
         selectedSection={selectedSection}
         onSelectSection={goToSection}
       />
+
+      {!loaderDone && <BriefcaseLoader onComplete={handleLoaderComplete} />}
     </main>
   );
 }

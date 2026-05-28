@@ -2,25 +2,24 @@
 
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { IntroArt } from "@/components/wrapped-shell/scene-art";
-import { BriefcaseLoader } from "./loader";
 
 gsap.registerPlugin(SplitText);
 
 type WrappedIntroProps = {
     user: { name: string };
     onComplete?: () => void;
+    active?: boolean;
 };
 
-export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
-    const [loaderDone, setLoaderDone] = useState(false);
+export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!loaderDone) return;
+        if (!active) return;
         if (!containerRef.current || !readyRef.current) return;
 
         gsap.set(readyRef.current, { autoAlpha: 0 });
@@ -45,6 +44,8 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             ease: "power3.out",
             stagger: 1.2,
         });
+
+        gsap.set(containerRef.current, { opacity: 1 });
 
         tl.to(containerRef.current, {
             opacity: 0,
@@ -80,7 +81,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
             split.revert();
             split2.revert();
         };
-    }, [onComplete, user.name, loaderDone]);
+    }, [onComplete, user.name, active]);
 
     return (
         <div className="relative w-full h-screen">
@@ -97,6 +98,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
                 >
                     <div
                         ref={containerRef}
+                        style={{ opacity: 0 }}
                         className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                     >
                         <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
@@ -112,6 +114,7 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
 
                     <div
                         ref={readyRef}
+                        style={{ visibility: "hidden", opacity: 0 }}
                         className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                     >
                         <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
@@ -126,8 +129,6 @@ export function WrappedIntro({ user, onComplete }: WrappedIntroProps) {
                     </div>
                 </div>
             </WrappedShell>
-
-            {!loaderDone && <BriefcaseLoader onComplete={() => setLoaderDone(true)} />}
         </div>
     );
 }

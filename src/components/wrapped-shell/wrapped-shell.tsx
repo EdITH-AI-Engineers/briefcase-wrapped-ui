@@ -128,7 +128,7 @@ export function WrappedShell({
                 className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-5"
                 style={{ color: palette.ink }}
             >
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                     <BriefcaseLogo size={34} body={palette.ink} tie="#08a0e9" divider={palette.soft} />
                     <span className="font-figtree font-black text-xl tracking-tight">
                         Briefcase
@@ -139,8 +139,8 @@ export function WrappedShell({
                     >
                         Wrapped &middot; 2026
                     </span>
-                </div>
-                <div
+                </div> */}
+                {/* <div
                     ref={sceneNumberRef}
                     className="flex items-stretch font-montserrat text-[11px] font-bold uppercase tracking-[0.25em]"
                 >
@@ -156,7 +156,7 @@ export function WrappedShell({
                     >
                         {sceneNumber}/06
                     </span>
-                </div>
+                </div> */}
             </div>
 
             {art ? (
@@ -172,7 +172,7 @@ export function WrappedShell({
                 className="absolute bottom-0 left-0 right-0 z-20"
                 style={{ color: palette.ink }}
             >
-                <div
+                <div    
                     ref={stripRef}
                     className="h-1.5 w-full"
                     style={{ backgroundColor: palette.ink }}

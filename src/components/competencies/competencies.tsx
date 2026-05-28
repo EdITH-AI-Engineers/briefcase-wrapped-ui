@@ -11,13 +11,15 @@ gsap.registerPlugin(SplitText);
 type WrappedCompetenciesProps = {
     user: { name: string };
     onComplete?: () => void;
+    active?: boolean;
 };
 
-export function WrappedCompetencies({ user, onComplete }: WrappedCompetenciesProps) {
+export function WrappedCompetencies({ user, onComplete, active = true }: WrappedCompetenciesProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!active) return;
         if (!containerRef.current || !container2_Ref.current) return;
 
         gsap.set(container2_Ref.current, { autoAlpha: 0 });
@@ -42,6 +44,8 @@ export function WrappedCompetencies({ user, onComplete }: WrappedCompetenciesPro
             ease: "power3.out",
             stagger: 2,
         });
+
+        gsap.set(containerRef.current, { opacity: 1 });
 
         tl.to(containerRef.current, {
             opacity: 0,
@@ -85,7 +89,7 @@ export function WrappedCompetencies({ user, onComplete }: WrappedCompetenciesPro
             split.revert();
             split2.revert();
         };
-    }, [onComplete, user.name]);
+    }, [onComplete, user.name, active]);
 
     return (
         <WrappedShell
@@ -101,6 +105,7 @@ export function WrappedCompetencies({ user, onComplete }: WrappedCompetenciesPro
             >
                 <div
                     ref={containerRef}
+                    style={{ opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                 >
                     <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
@@ -116,6 +121,7 @@ export function WrappedCompetencies({ user, onComplete }: WrappedCompetenciesPro
 
                 <div
                     ref={container2_Ref}
+                    style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                 >
                     <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">

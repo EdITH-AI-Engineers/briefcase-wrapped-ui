@@ -26,15 +26,13 @@ const UPPER_RIGHT_Y = (DIAMOND_TOP_Y + DIAMOND_CY) / 2;
 
 export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
     const overlayRef = useRef<HTMLDivElement>(null);
-    const homeCardRef = useRef<HTMLDivElement>(null);
     const dotRef = useRef<SVGGElement>(null);
     const flapLeftRef = useRef<SVGLineElement>(null);
     const flapRightRef = useRef<SVGLineElement>(null);
     const diamondRef = useRef<SVGRectElement>(null);
     const logoRef = useRef<SVGGElement>(null);
     const stageRef = useRef<SVGGElement>(null);
-    const tagRef = useRef<HTMLDivElement>(null);
-    const counterRef = useRef<HTMLDivElement>(null);
+    const counterRef = useRef<SVGTextElement>(null);
     const completedRef = useRef(false);
 
     useEffect(() => {
@@ -50,19 +48,16 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
         gsap.set(diamondRef.current, { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
         gsap.set(logoRef.current, { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
         gsap.set(dotRef.current, { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
-        gsap.set(tagRef.current, { opacity: 0, y: 10 });
         gsap.set(counterRef.current, { opacity: 0 });
 
         const tl = gsap.timeline();
 
-        // Phase 1 — Briefcase Home placeholder + 0 → 100 counter
-        tl.fromTo(
-            homeCardRef.current,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.4, ease: "power2.out" },
-        );
-        tl.to(counterRef.current, { opacity: 1, duration: 0.3 }, "<0.1");
+        tl.to(diamondRef.current, {
+            scale: 1, opacity: 1,
+            duration: 0.7, ease: "back.out(2.2)",
+        });
 
+        tl.to(counterRef.current, { opacity: 1, duration: 0.25 }, ">");
         const counter = { v: 0 };
         tl.to(counter, {
             v: 100,
@@ -75,22 +70,18 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
             },
         }, "<");
 
-        tl.to(homeCardRef.current, {
-            opacity: 0,
-            duration: 0.4,
-            ease: "power2.in",
-        });
+        tl.to({}, { duration: 0.6 });
 
-        // Phase 2 — Diamond + logo materialize, flaps draw outward to the screen corners, dot pops above
-        tl.to(diamondRef.current, {
-            scale: 1, opacity: 1,
-            duration: 0.7, ease: "back.out(2.2)",
-        });
+        tl.to(counterRef.current, {
+            opacity: 0,
+            duration: 0.2,
+            ease: "power2.out",
+        }, ">");
 
         tl.to(logoRef.current, {
             scale: 1, opacity: 1,
             duration: 0.5, ease: "back.out(2.4)",
-        }, "-=0.3");
+        }, "-=0.15");
 
         tl.to([flapL, flapR], {
             strokeDashoffset: 0,
@@ -103,39 +94,23 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
             duration: 0.45, ease: "back.out(2.4)",
         }, "-=0.5");
 
-        tl.to(tagRef.current, {
-            opacity: 1, y: 0,
-            duration: 0.4, ease: "power3.out",
-        }, "-=0.2");
-
-        // Phase 3 — Hold, then "open": dot lifts off, stage zooms toward viewer, overlay fades
         tl.to({}, { duration: 0.6 });
 
         tl.to(dotRef.current, {
             y: -120, opacity: 0,
             duration: 0.6, ease: "power2.in",
         });
-        tl.to(flapLeftRef.current, {
-            rotate: -10, x: -20, y: -10,
-            duration: 0.6, ease: "power2.inOut",
-            transformOrigin: `${UPPER_LEFT_X}px ${UPPER_LEFT_Y}px`,
-        }, "<");
-        tl.to(flapRightRef.current, {
-            rotate: 10, x: 20, y: -10,
-            duration: 0.6, ease: "power2.inOut",
-            transformOrigin: `${UPPER_RIGHT_X}px ${UPPER_RIGHT_Y}px`,
-        }, "<");
+
+        tl.to(logoRef.current, {
+            scale: 1, opacity: 0,
+            duration: 0.5, ease: "back.out(2.4)",
+        }, "-=0.15");
 
         tl.to(stageRef.current, {
             scale: 5, opacity: 0,
             duration: 0.85, ease: "power3.in",
-            transformOrigin: "50% 50%",
+            transformOrigin: "50% 75%",
         }, "-=0.05");
-
-        tl.to([tagRef.current, counterRef.current], {
-            opacity: 0,
-            duration: 0.4, ease: "power2.in",
-        }, "<0.1");
 
         tl.to(overlayRef.current, {
             opacity: 0,
@@ -160,25 +135,10 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
         >
             <div className="absolute top-6 left-8 right-8 z-10 flex items-center justify-between font-montserrat text-[11px] font-bold uppercase tracking-[0.3em] text-[#08a0e9]">
                 <span>Briefcase Home</span>
-                <span
-                    ref={counterRef}
-                    className="text-[#f4a261] font-figtree font-black text-base tracking-tight"
-                >
-                    000 %
-                </span>
             </div>
             <div className="absolute bottom-6 left-8 right-8 z-10 flex items-center justify-between font-montserrat text-[10px] font-bold uppercase tracking-[0.3em] text-[#08a0e9]/70">
                 <span>Loading wrapped 2026</span>
                 <span>EdiTH &middot; FEU Institute of Tech</span>
-            </div>
-
-            <div
-                ref={homeCardRef}
-                className="absolute inset-0 z-0 flex flex-col items-center justify-center pointer-events-none"
-            >
-                <div className="font-figtree font-black text-[#f2f2f2]/15 text-[20vmin] leading-none tracking-tighter">
-                    .home
-                </div>
             </div>
 
             <svg
@@ -188,7 +148,6 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
                 aria-hidden
             >
                 <g ref={stageRef}>
-                    {/* Flap lines reach all the way to the top-left / top-right corners of the screen */}
                     <line
                         ref={flapLeftRef}
                         x1={UPPER_LEFT_X} y1={UPPER_LEFT_Y}
@@ -206,7 +165,7 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
                     <g ref={dotRef}>
                         <circle
                             cx={DIAMOND_CX}
-                            cy={DIAMOND_TOP_Y - 70}
+                            cy={DIAMOND_TOP_Y - 100}
                             r="22"
                             fill="#08a0e9"
                             stroke="#f2f2f2"
@@ -222,6 +181,22 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
                         transform={`rotate(45 ${DIAMOND_CX} ${DIAMOND_CY})`}
                         fill="#08a0e9" stroke="#f2f2f2" strokeWidth="6"
                     />
+
+                    {/* Percentage counter placed inside the diamond */}
+                    <text
+                        ref={counterRef}
+                        x={DIAMOND_CX}
+                        y={DIAMOND_CY + 16}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontFamily="Figtree, sans-serif"
+                        fontWeight="900"
+                        fontSize="52"
+                        letterSpacing="4"
+                        fill="#f2f2f2"
+                    >
+                        000 %
+                    </text>
 
                     {/* Brand logo inside the diamond: white briefcase silhouette, cyan tie blends with the diamond */}
                     <g
@@ -239,21 +214,6 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
                     </g>
                 </g>
             </svg>
-
-            <div
-                ref={tagRef}
-                className="absolute bottom-[16vh] z-10 flex items-stretch"
-            >
-                <span className="flex items-center gap-3 bg-[#f2f2f2] text-[#0a2236] px-4 py-2 border-4 border-[#f2f2f2]">
-                    <span className="h-3 w-3 bg-[#f4a261]" />
-                    <span className="font-figtree font-black text-2xl tracking-tight">
-                        Briefcase
-                    </span>
-                </span>
-                <span className="flex items-center font-montserrat font-black text-[12px] uppercase tracking-[0.3em] bg-[#08a0e9] text-[#0a2236] border-4 border-[#08a0e9] px-3">
-                    Wrapped &middot; 2026
-                </span>
-            </div>
         </div>
     );
 }

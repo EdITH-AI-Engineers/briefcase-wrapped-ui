@@ -11,13 +11,15 @@ gsap.registerPlugin(SplitText);
 type WrappedSummaryProps = {
     user: { name: string };
     onComplete?: () => void;
+    active?: boolean;
 };
 
-export function WrappedSummary({ user, onComplete }: WrappedSummaryProps) {
+export function WrappedSummary({ user, onComplete, active = true }: WrappedSummaryProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!active) return;
         if (!containerRef.current || !container2_Ref.current) return;
 
         const split = SplitText.create(containerRef.current, {
@@ -37,6 +39,8 @@ export function WrappedSummary({ user, onComplete }: WrappedSummaryProps) {
             ease: "power3.out",
             stagger: 2,
         });
+
+        gsap.set(containerRef.current, { opacity: 1 });
 
         tl.to(containerRef.current, {
             opacity: 0,
@@ -59,7 +63,7 @@ export function WrappedSummary({ user, onComplete }: WrappedSummaryProps) {
             tl.kill();
             split.revert();
         };
-    }, [onComplete, user.name]);
+    }, [onComplete, user.name, active]);
 
     return (
         <WrappedShell
@@ -75,6 +79,7 @@ export function WrappedSummary({ user, onComplete }: WrappedSummaryProps) {
             >
                 <div
                     ref={containerRef}
+                    style={{ opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
                 >
                     <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 text-[#f4a261]">
@@ -90,6 +95,7 @@ export function WrappedSummary({ user, onComplete }: WrappedSummaryProps) {
 
                 <div
                     ref={container2_Ref}
+                    style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
                 />
             </div>
