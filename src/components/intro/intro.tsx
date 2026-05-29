@@ -67,10 +67,18 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
             delay: 0.6,
         });
 
+        tl.to(readyRef.current, {
+            opacity: 0,
+            y: -40,
+            duration: 0.6,
+            ease: "power2.in",
+            delay: 0.8,
+        });
+
         let completeDelay: gsap.core.Tween | null = null;
 
         tl.eventCallback("onComplete", () => {
-            completeDelay = gsap.delayedCall(1.6, () => {
+            completeDelay = gsap.delayedCall(1.5, () => {
                 onComplete?.();
             });
         });
@@ -88,7 +96,7 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
             <WrappedShell
                 sceneNumber="01"
                 sceneLabel="Intro"
-                marqueeText="Hello there  //  briefcase wrapped 2026  //  let's go"
+                marqueeText="Briefcase Wrapped 2026 // Are you ready? // Share this with your friends!"
                 variant="blue"
                 art={<IntroArt />}
             >
@@ -101,9 +109,6 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
                         style={{ opacity: 0 }}
                         className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                     >
-                        <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
-                            // 01 — Hello
-                        </p>
                         <p className="font-figtree font-black text-[clamp(48px,8vw,112px)] leading-[0.95] tracking-tight">
                             Hello {user.name.toLowerCase()}!
                         </p>
@@ -117,9 +122,6 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
                         style={{ visibility: "hidden", opacity: 0 }}
                         className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                     >
-                        <p className="font-montserrat font-bold text-sm uppercase tracking-[0.4em] mb-3 opacity-70">
-                            // 01 — Ready?
-                        </p>
                         <p className="font-figtree font-black text-[clamp(48px,8vw,112px)] leading-[0.95] tracking-tight">
                             you ready?
                         </p>

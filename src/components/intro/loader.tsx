@@ -65,7 +65,7 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
             ease: "power1.inOut",
             onUpdate: () => {
                 if (counterRef.current) {
-                    counterRef.current.textContent = `${Math.floor(counter.v).toString().padStart(3, "0")} %`;
+                    counterRef.current.textContent = `${Math.floor(counter.v).toString()}`;
                 }
             },
         }, "<");
