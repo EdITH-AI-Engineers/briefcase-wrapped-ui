@@ -52,11 +52,7 @@ export function IntroArt() {
             </g>
 
             <g className="intro-floaty">
-                <rect className="intro-pop" x="100" y="110" width="84" height="84" fill="#0a2236" />
-                <text
-                    x="142" y="170" textAnchor="middle"
-                    fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="42" fill="#f4a261"
-                >01</text>
+                <rect className="intro-pop" x="100" y="155" width="84" height="84" fill="#0a2236" />
             </g>
 
             <g className="intro-floaty">

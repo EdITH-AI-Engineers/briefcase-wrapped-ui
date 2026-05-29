@@ -1,6 +1,7 @@
 "use client";
 
 import gsap from "gsap";
+import Image from "next/image";
 import { useEffect, useRef, type ReactNode } from "react";
 
 type Variant = "blue" | "navy" | "orange" | "cream";
@@ -128,8 +129,10 @@ export function WrappedShell({
                 className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-5"
                 style={{ color: palette.ink }}
             >
-                {/* <div className="flex items-center gap-3">
-                    <BriefcaseLogo size={34} body={palette.ink} tie="#08a0e9" divider={palette.soft} />
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white flex items-center justify-center">
+                        <Image src="/briefcase-logo.svg" alt="Briefcase" width={34} height={34} />
+                    </div>
                     <span className="font-figtree font-black text-xl tracking-tight">
                         Briefcase
                     </span>
@@ -139,7 +142,7 @@ export function WrappedShell({
                     >
                         Wrapped &middot; 2026
                     </span>
-                </div> */}
+                </div>
                 {/* <div
                     ref={sceneNumberRef}
                     className="flex items-stretch font-montserrat text-[11px] font-bold uppercase tracking-[0.25em]"
@@ -172,7 +175,7 @@ export function WrappedShell({
                 className="absolute bottom-0 left-0 right-0 z-20"
                 style={{ color: palette.ink }}
             >
-                <div    
+                <div
                     ref={stripRef}
                     className="h-1.5 w-full"
                     style={{ backgroundColor: palette.ink }}
@@ -184,7 +187,7 @@ export function WrappedShell({
                     >
                         <div
                             ref={marqueeRef}
-                            className="whitespace-nowrap font-figtree font-black text-2xl py-2"
+                            className="whitespace-nowrap font-figtree font-black text-2xl py-1"
                             style={{ color: palette.soft }}
                         >
                             <span className="mr-8">{repeatedMarquee}</span>
@@ -193,11 +196,11 @@ export function WrappedShell({
                     </div>
                 ) : null}
                 <div
-                    className="flex items-center justify-between px-8 py-4 font-montserrat text-[10px] font-bold uppercase tracking-[0.3em]"
+                    className="flex items-center justify-between px-8 py-10 font-montserrat text-[10px] font-bold uppercase tracking-[0.3em]"
                     style={{ color: palette.ink }}
                 >
-                    <span>{`>>> scene ${sceneNumber} / ${sceneLabel.toLowerCase()}`}</span>
-                    <span>EdiTH &middot; FEU Institute of Tech</span>
+                    {/* <span>{`>>> scene ${sceneNumber} / ${sceneLabel.toLowerCase()}`}</span>
+                    <span>EdiTH &middot; FEU Institute of Tech</span> */}
                 </div>
             </div>
 
@@ -223,31 +226,6 @@ function GridPattern({ stroke }: { stroke: string }) {
             </defs>
             <rect width="100%" height="100%" fill="url(#brut-grid-fine)" />
             <rect width="100%" height="100%" fill="url(#brut-grid)" />
-        </svg>
-    );
-}
-
-export function BriefcaseLogo({
-    size = 40,
-    body = "#0a2236",
-    tie = "#08a0e9",
-    divider = "#f2f2f2",
-}: {
-    size?: number;
-    body?: string;
-    tie?: string;
-    divider?: string;
-}) {
-    return (
-        <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden>
-            <path
-                d="M22 20 V14 a3 3 0 0 1 3-3 h14 a3 3 0 0 1 3 3 V20"
-                stroke={body} strokeWidth="4" fill="none" strokeLinecap="round"
-            />
-            <rect x="6" y="20" width="52" height="34" rx="3" fill={body} />
-            <line x1="6" y1="32" x2="58" y2="32" stroke={divider} strokeWidth="2" opacity="0.85" />
-            <polygon points="27,20 32,26 37,20" fill={tie} />
-            <polygon points="27,26 37,26 39,46 32,52 25,46" fill={tie} />
         </svg>
     );
 }
