@@ -130,7 +130,7 @@ export function WrappedShell({
                 style={{ color: palette.ink }}
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white flex items-center justify-center">
+                    {/* <div className="w-10 h-10 bg-white flex items-center justify-center">
                         <Image src="/briefcase-logo.svg" alt="Briefcase" width={34} height={34} />
                     </div>
                     <span className="font-figtree font-black text-xl tracking-tight">
@@ -141,7 +141,7 @@ export function WrappedShell({
                         style={{ borderColor: palette.ink }}
                     >
                         Wrapped &middot; 2026
-                    </span>
+                    </span> */}
                 </div>
                 {/* <div
                     ref={sceneNumberRef}
@@ -182,7 +182,7 @@ export function WrappedShell({
                 />
                 {repeatedMarquee ? (
                     <div
-                        className="overflow-hidden border-t-2 border-b-2"
+                        className="wrapped-marquee overflow-hidden border-t-2 border-b-2"
                         style={{ borderColor: palette.ink, backgroundColor: palette.ink }}
                     >
                         <div

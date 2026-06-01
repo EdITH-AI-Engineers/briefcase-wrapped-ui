@@ -36,14 +36,29 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
 
         const tl = gsap.timeline();
 
-        tl.from(split.lines, {
-            rotationX: -90,
-            transformOrigin: "50% 0% -50px",
-            opacity: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            stagger: 1.2,
+        // 1. Design pops IN first — fully complete before text starts.
+        tl.to(".intro-pop", {
+            scale: 1,
+            opacity: 1,
+            duration: 0.55,
+            ease: "back.out(2.2)",
+            stagger: { each: 0.05, from: "random" },
+            transformOrigin: "50% 50%",
         });
+
+        // 2. Hello text in (small gap after design lands).
+        tl.from(
+            split.lines,
+            {
+                rotationX: -90,
+                transformOrigin: "50% 0% -50px",
+                opacity: 0,
+                duration: 0.7,
+                ease: "power3.out",
+                stagger: 1.2,
+            },
+            "+=0.2",
+        );
 
         gsap.set(containerRef.current, { opacity: 1 });
 
@@ -75,10 +90,24 @@ export function WrappedIntro({ user, onComplete, active = true }: WrappedIntroPr
             delay: 0.8,
         });
 
+        // 3. Design pops OUT after text has fully exited — small gap, then staggered.
+        tl.to(
+            ".intro-pop",
+            {
+                scale: 0,
+                opacity: 0,
+                duration: 0.5,
+                stagger: { each: 0.05, from: "random" },
+                ease: "back.in(1.7)",
+                transformOrigin: "50% 50%",
+            },
+            "+=0.25",
+        );
+
         let completeDelay: gsap.core.Tween | null = null;
 
         tl.eventCallback("onComplete", () => {
-            completeDelay = gsap.delayedCall(1.5, () => {
+            completeDelay = gsap.delayedCall(0.1, () => {
                 onComplete?.();
             });
         });
