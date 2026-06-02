@@ -177,7 +177,7 @@ export function WrappedShell({
             >
                 <div
                     ref={stripRef}
-                    className="h-1.5 w-full"
+                    className="wrapped-strip h-1.5 w-full"
                     style={{ backgroundColor: palette.ink }}
                 />
                 {repeatedMarquee ? (
