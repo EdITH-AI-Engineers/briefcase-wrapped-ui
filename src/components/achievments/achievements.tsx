@@ -47,14 +47,24 @@ const spanClassFor = (size: BentoSize) =>
         : size === "md" ? "col-span-2 row-span-1"
             : "col-span-1 row-span-1";
 
-// Walk every card in grid order so each achievement gets a focused moment.
-const pickFocusOrder = (sizes: BentoSize[]): number[] =>
-    sizes.map((_, i) => i);
+// On-brand card palette. The achievements.json ships generic pastels; here we
+// override them with the Wrapped palette (orange / cream / cyan family) so the
+// grid reads as the same brutalist-editorial world as every other scene.
+// Navy ink (#0a2236) stays legible on every tone below.
+const CARD_TONES = [
+    "#f4a261", // orange   — hero
+    "#f4ead2", // cream
+    "#8fd0f0", // cyan
+    "#f6b27f", // peach
+    "#bfe3f7", // pale cyan
+];
+const toneFor = (i: number) => CARD_TONES[i % CARD_TONES.length];
 
 export function WrappedAchievments({ user, onComplete, active = true }: WrappedAchievmentsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
     const bentoRef = useRef<HTMLDivElement>(null);
+    const countRef = useRef<HTMLSpanElement>(null);
     const finaleRef = useRef<HTMLDivElement>(null);
     const finaleBottomRef = useRef<SVGSVGElement>(null);
 
@@ -150,72 +160,91 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
             ease: "power2.in",
         });
 
-        // 7. Bento grid reveals — random staggered pop-in for that "everything snapping into place" feel
+        // 7. Header anchor reveals — a single concrete "you unlocked N" line.
+        //    Giving the brain one clear, countable reward up front beats making
+        //    it infer progress from a wall of cards.
         tl.set(bentoRef.current, { autoAlpha: 1 });
-        tl.from(".bento-card", {
-            scale: 0.4,
+        tl.from(".bento-header", {
+            y: -22,
             opacity: 0,
-            y: 30,
-            duration: 0.55,
-            ease: "back.out(1.7)",
-            stagger: { each: 0.06, from: "random" },
-            transformOrigin: "50% 50%",
+            duration: 0.5,
+            ease: "power3.out",
         });
 
-        // 8. Brief hold so the user sees the full grid
-        tl.to({}, { duration: 1.2 });
+        // Count-up runs concurrently with the grid snapping in (starts with step 8).
+        const counter = { v: 0 };
+        tl.to(
+            counter,
+            {
+                v: achievements.length,
+                duration: 0.9,
+                ease: "power1.out",
+                onUpdate: () => {
+                    if (countRef.current) {
+                        countRef.current.textContent = String(
+                            Math.round(counter.v),
+                        ).padStart(2, "0");
+                    }
+                },
+            },
+            ">-0.1",
+        );
 
-        // 9. Focus-zoom sequence — sequentially "scrub" through a few cards.
-        //    The focused card translates+scales to viewport center while the
-        //    others stay at their grid positions as peripheral context.
-        const focusOrder = pickFocusOrder(achievementSizes);
+        // 8. Bento grid reveals — random staggered pop-in for that "everything snapping into place" feel
+        tl.from(
+            ".bento-card",
+            {
+                scale: 0.4,
+                opacity: 0,
+                y: 30,
+                duration: 0.55,
+                ease: "back.out(1.7)",
+                stagger: { each: 0.06, from: "random" },
+                transformOrigin: "50% 50%",
+            },
+            "<",
+        );
 
-        const computeFocusTransform = (card: HTMLDivElement) => {
-            const container = bentoRef.current!.getBoundingClientRect();
-            const r = card.getBoundingClientRect();
-            const containerCx = container.left + container.width / 2;
-            const containerCy = container.top + container.height / 2;
-            const cardCx = r.left + r.width / 2;
-            const cardCy = r.top + r.height / 2;
-            const targetW = container.width * 0.55;
-            const targetH = container.height * 0.72;
-            const s = Math.min(targetW / r.width, targetH / r.height);
-            return { x: containerCx - cardCx, y: containerCy - cardCy, scale: s };
-        };
+        // 9. Spotlight scan — highlight one card at a time IN PLACE.
+        //    Cards never fly around the screen: the active card lifts a touch
+        //    while the rest dim back. One unambiguous focal point at any moment
+        //    keeps the sequence calm and easy to track.
+        const allCards = (): HTMLDivElement[] =>
+            bentoRef.current
+                ? Array.from(
+                    bentoRef.current.querySelectorAll<HTMLDivElement>(".bento-card"),
+                )
+                : [];
 
-        const getCard = (idx: number) =>
-            bentoRef.current!.querySelectorAll<HTMLDivElement>(".bento-card")[idx];
+        const SPOT_IN = 0.32;
+        const SPOT_HOLD = 0.5;
 
-        const ZOOM_IN = 0.5;
-        const HOLD = 0.9;
-        const ZOOM_OUT = 0.45;
+        tl.to({}, { duration: 0.5 }); // let the grid settle first
 
-        focusOrder.forEach((idx) => {
+        achievementSizes.forEach((_, idx) => {
             tl.call(() => {
-                const card = getCard(idx);
-                if (!card) return;
-                const t = computeFocusTransform(card);
-                gsap.set(card, { zIndex: 50 });
-                gsap.to(card, {
-                    x: t.x, y: t.y, scale: t.scale,
-                    duration: ZOOM_IN, ease: "power3.inOut",
+                allCards().forEach((c, i) => {
+                    const focused = i === idx;
+                    gsap.set(c, { zIndex: focused ? 50 : 1 });
+                    gsap.to(c, {
+                        opacity: focused ? 1 : 0.24,
+                        scale: focused ? 1.06 : 0.97,
+                        duration: SPOT_IN,
+                        ease: "power2.out",
+                    });
                 });
             });
-            tl.to({}, { duration: ZOOM_IN + HOLD });
-            tl.call(() => {
-                const card = getCard(idx);
-                if (!card) return;
-                gsap.to(card, {
-                    x: 0, y: 0, scale: 1,
-                    duration: ZOOM_OUT, ease: "power3.inOut",
-                    onComplete: () => gsap.set(card, { zIndex: 1 }),
-                });
-            });
-            tl.to({}, { duration: ZOOM_OUT });
+            tl.to({}, { duration: SPOT_IN + SPOT_HOLD });
         });
 
-        // 10. Settle, then bento exits with reverse-direction random stagger
-        tl.to({}, { duration: 0.5 });
+        // 10. Restore the full grid, brief hold, then exit with reverse stagger
+        tl.call(() => {
+            allCards().forEach((c) => {
+                gsap.set(c, { zIndex: 1 });
+                gsap.to(c, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" });
+            });
+        });
+        tl.to({}, { duration: 0.8 });
         tl.to(".bento-card", {
             scale: 0.4,
             opacity: 0,
@@ -309,7 +338,7 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#f2f2f2] text-center"
                 >
                     <p className="font-figtree font-black text-[clamp(28px,4.6vw,72px)] leading-[0.95] tracking-tight whitespace-nowrap">
-                        Did you did well this year?
+                        Did you do well this year?
                     </p>
                     <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
                         Let&apos;s find out
@@ -320,15 +349,37 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
                 <div
                     ref={bentoRef}
                     style={{ visibility: "hidden", opacity: 0 }}
-                    className="absolute inset-0 flex items-center justify-center p-6"
+                    className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-6"
                 >
+                    {/* Count anchor — one concrete, countable reward */}
+                    <div className="bento-header flex items-center gap-3">
+                        <span
+                            className="inline-block h-2 w-2 rotate-45"
+                            style={{ backgroundColor: "#f4a261" }}
+                        />
+                        <span className="font-montserrat text-[11px] font-bold uppercase tracking-[0.34em] text-[#f2f2f2]/70">
+                            Achievements Unlocked
+                        </span>
+                        <span
+                            ref={countRef}
+                            className="font-figtree font-black text-3xl leading-none tabular-nums"
+                            style={{ color: "#f4a261" }}
+                        >
+                            00
+                        </span>
+                        <span
+                            className="inline-block h-2 w-2 rotate-45"
+                            style={{ backgroundColor: "#f4a261" }}
+                        />
+                    </div>
+
                     <div
                         className="grid gap-4 w-full max-w-6xl"
                         style={{
                             gridTemplateColumns: `repeat(${bentoCols}, minmax(0, 1fr))`,
-                            gridAutoRows: "minmax(150px, 1fr)",
+                            gridAutoRows: "minmax(140px, 1fr)",
                             gridAutoFlow: "dense",
-                            maxHeight: "calc(100vh - 12rem)",
+                            maxHeight: "calc(100vh - 15rem)",
                         }}
                     >
                         {achievements.map((ach, i) => {
@@ -339,11 +390,11 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
                             return (
                                 <div
                                     key={ach.id}
-                                    className={`bento-card relative ${spanClass} rounded-3xl overflow-hidden p-5`}
+                                    className={`bento-card relative ${spanClass} rounded-[14px] overflow-hidden p-5`}
                                     style={{
-                                        backgroundColor: ach.color,
-                                        boxShadow:
-                                            "0 18px 40px -12px rgba(0,0,0,0.55), 0 0 0 1px rgba(10,34,54,0.08) inset",
+                                        backgroundColor: toneFor(i),
+                                        border: "2.5px solid #0a2236",
+                                        boxShadow: "5px 5px 0 0 #0a2236",
                                     }}
                                 >
                                     {/* Decorative tape strip */}
@@ -386,8 +437,8 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
                                                     width: plateSize,
                                                     height: plateSize,
                                                     backgroundColor: "#ffffff",
-                                                    boxShadow:
-                                                        "0 10px 22px -10px rgba(0,0,0,0.35), inset 0 -5px 0 rgba(10,34,54,0.06)",
+                                                    border: "2.5px solid #0a2236",
+                                                    boxShadow: "3px 3px 0 0 #0a2236",
                                                 }}
                                             >
                                                 <div style={{ fontSize: emojiSize, lineHeight: 1 }}>{ach.icon}</div>
@@ -413,8 +464,8 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
                                                     width: plateSize,
                                                     height: plateSize,
                                                     backgroundColor: "#ffffff",
-                                                    boxShadow:
-                                                        "0 12px 24px -10px rgba(0,0,0,0.4), inset 0 -5px 0 rgba(10,34,54,0.06)",
+                                                    border: "2.5px solid #0a2236",
+                                                    boxShadow: "3px 3px 0 0 #0a2236",
                                                 }}
                                             >
                                                 <div style={{ fontSize: emojiSize, lineHeight: 1 }}>{ach.icon}</div>

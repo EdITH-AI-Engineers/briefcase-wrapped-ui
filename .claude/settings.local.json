@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(ls \"C:\\\\Users\\\\PtrRaul\\\\Documents\\\\Downloads\\\\Recording 2026-05-26 190314.mp4\" 2>&1 | head -5)",
-      "Read(//c/Users/PtrRaul/Documents/Downloads/**)"
+      "Read(//c/Users/PtrRaul/Documents/Downloads/**)",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ]
   }
 }
