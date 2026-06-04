@@ -1,0 +1,19 @@
+{
+  "building": "Skill Tower",
+  "year": "2026",
+  "program": "BS Computer Science",
+  "mastery": [
+    { "name": "Problem Solving", "icon": "🧩", "level": 94, "note": "Your top floor — penthouse view." },
+    { "name": "Programming Fundamentals", "icon": "💻", "level": 91, "note": "Clean, correct, paradigm-fluent." },
+    { "name": "Logical Reasoning", "icon": "🧠", "level": 89, "note": "Proofs and edge cases come easy." },
+    { "name": "Self-Directed Learning", "icon": "📚", "level": 87, "note": "You teach yourself fast." },
+    { "name": "Collaboration", "icon": "🤝", "level": 85, "note": "A reliable teammate on any build." }
+  ],
+  "gaps": [
+    { "name": "Cloud & DevOps", "icon": "☁️", "level": 53, "note": "Ship it, scale it — next up." },
+    { "name": "Networking & Outreach", "icon": "🌐", "level": 50, "note": "Rooms left to furnish." },
+    { "name": "UI / UX Design", "icon": "🎨", "level": 47, "note": "Make it feel as good as it works." },
+    { "name": "Technical Writing", "icon": "✍️", "level": 44, "note": "Docs that others can follow." },
+    { "name": "Public Speaking", "icon": "🎤", "level": 38, "note": "The ground floor to build up." }
+  ]
+}

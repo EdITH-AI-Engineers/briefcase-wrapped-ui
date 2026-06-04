@@ -32,6 +32,16 @@ const pt = (r: number, i: number): [number, number] => [
     C + r * Math.sin(angRad(i)),
 ];
 
+// ── Camera (spotlight zoom) ───────────────────────────────────────────────────
+// When a domain is in focus we push the whole web with a translate+scale so the
+// focused node lands dead-center of the stage (both axes) and grows. Because C is
+// the box center, a node's offset from center is purely the NODER component.
+const ZOOM = 1.34; // how far we dolly in on the focused competency
+const camOffset = (i: number) => ({
+    ox: (NODER * Math.cos(angRad(i))) / 100, // fraction of box width
+    oy: (NODER * Math.sin(angRad(i))) / 100, // fraction of box height
+});
+
 // Octagonal "spider web" ring at a given fraction of MAXR.
 const ringPoints = (frac: number) =>
     domains.map((_, i) => pt(frac * MAXR, i).join(",")).join(" ");
@@ -49,6 +59,9 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);
     const radarRef = useRef<HTMLDivElement>(null);
+    const stageRef = useRef<HTMLDivElement>(null);
+    const radBoxRef = useRef<HTMLDivElement>(null);
+    const mblurRef = useRef<SVGFEGaussianBlurElement>(null);
     const overallRef = useRef<HTMLSpanElement>(null);
     const sweepRef = useRef<SVGGElement>(null);
     const capRef = useRef<HTMLDivElement>(null);
@@ -92,14 +105,14 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
 
             const tl = gsap.timeline({ delay: 0.5 });
 
-            // 1. Headline one
+            // 1. Headline one — the "how good are you now?" line follows close behind.
             tl.from(split.lines, {
                 rotationX: -90,
                 transformOrigin: "50% 0% -50px",
                 opacity: 0,
                 duration: 0.7,
                 ease: "power3.out",
-                stagger: 2,
+                stagger: 0.55,
             });
             gsap.set(containerRef.current, { opacity: 1 });
             tl.to(containerRef.current, {
@@ -131,7 +144,7 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
 
             // 3. Clear the stage: pop the ambient art + hide chrome
             tl.to(
-                [".comp-bar", ".comp-hex", ".comp-orbit", ".comp-pct"],
+                [".comp-pop"],
                 {
                     scale: 0,
                     opacity: 0,
@@ -243,7 +256,8 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                 "-=0.6",
             );
             tl.set(sweepRef.current, { autoAlpha: 1 });
-            tl.set(capRef.current, { autoAlpha: 1 });
+            // The info window stays hidden here — it now rises in per competency,
+            // only while that competency holds the spotlight (see the sweep below).
 
             // Ambient life (starts once everything has landed): inner pulse + orbit drift.
             tl.add(() => {
@@ -265,6 +279,8 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
             });
 
             // 7. Guided radar sweep — one domain in focus at a time (ADHD-calm).
+            //    The camera now dollies in on the focused competency, recentering
+            //    it to the middle of the stage with a slip of directional motion blur.
             tl.to({}, { duration: 0.5 });
 
             const nodes = () =>
@@ -276,8 +292,57 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     rootRef.current?.querySelectorAll<SVGCircleElement>(".rad-vertex") ?? [],
                 );
 
+            // Arm the motion-blur filter for the whole sweep (0 deviation = invisible)
+            // and feather the stage edges so the dollied web recedes softly. The clip
+            // (overflow + mask) is only engaged here — at rest the full octagon must
+            // breathe past the stage box, so the stage stays unclipped until now.
+            const EDGE_MASK =
+                "linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)";
+            tl.add(() => {
+                if (radBoxRef.current) radBoxRef.current.style.filter = "url(#comp-mblur)";
+                if (stageRef.current) {
+                    stageRef.current.style.overflow = "hidden";
+                    stageRef.current.style.maskImage = EDGE_MASK;
+                    stageRef.current.style.webkitMaskImage = EDGE_MASK;
+                }
+            });
+
+            // Fire a short directional blur pulse along the camera's travel vector.
+            const prevOff = { ox: 0, oy: 0 };
+            const pulseBlur = (dx: number, dy: number) => {
+                const mag = Math.hypot(dx, dy);
+                if (mag < 1e-3) return;
+                const peak = Math.min(7, mag * 13); // px, scaled by distance travelled
+                const bx = (peak * Math.abs(dx)) / mag;
+                const by = (peak * Math.abs(dy)) / mag;
+                const o = { b: 0 };
+                const apply = () =>
+                    mblurRef.current?.setAttribute(
+                        "stdDeviation",
+                        `${(bx * o.b).toFixed(2)} ${(by * o.b).toFixed(2)}`,
+                    );
+                gsap
+                    .timeline()
+                    .to(o, { b: 1, duration: 0.22, ease: "power2.in", onUpdate: apply })
+                    .to(o, { b: 0, duration: 0.4, ease: "power2.out", onUpdate: apply });
+            };
+
             domains.forEach((d, idx) => {
                 tl.add(() => {
+                    // Dolly the camera: bring this node to the stage center (x & y) and
+                    // scale up. Pan vector drives the motion-blur direction.
+                    const { ox, oy } = camOffset(idx);
+                    pulseBlur(ox - prevOff.ox, oy - prevOff.oy);
+                    prevOff.ox = ox;
+                    prevOff.oy = oy;
+                    gsap.to(radBoxRef.current, {
+                        xPercent: -ZOOM * ox * 100,
+                        yPercent: -ZOOM * oy * 100,
+                        scale: ZOOM,
+                        duration: 0.6,
+                        ease: "power3.inOut",
+                        transformOrigin: "50% 50%",
+                    });
                     // Rotate the sweep to point at this domain.
                     gsap.to(sweepRef.current, {
                         rotation: angDeg(idx),
@@ -285,13 +350,14 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                         ease: "power3.inOut",
                         svgOrigin: "50 50",
                     });
-                    // Lift the focused node, dim the rest.
+                    // Lift the focused node, fade the rest right back so nothing
+                    // crowds the spotlit competency.
                     nodes().forEach((node, i) => {
                         const on = i === idx;
                         gsap.set(node, { zIndex: on ? 60 : 1 });
                         gsap.to(node, {
-                            scale: on ? 1.16 : 0.9,
-                            opacity: on ? 1 : 0.28,
+                            scale: on ? 1.12 : 0.86,
+                            opacity: on ? 1 : 0.16,
                             duration: 0.4,
                             ease: "power2.out",
                         });
@@ -304,34 +370,67 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                             transformOrigin: "50% 50%",
                         });
                     });
-                    // Swap caption content + flash it in.
+                    // The info window only lives while this competency holds the
+                    // spotlight: dismiss the previous card, swap in this domain's
+                    // data, then rise the window back in beneath the centered node.
                     const tier = tierFor(d.level);
-                    if (capIconRef.current) capIconRef.current.textContent = d.icon;
-                    if (capTitleRef.current) capTitleRef.current.textContent = d.label;
-                    if (capTierRef.current) {
-                        capTierRef.current.textContent = tier.label;
-                        capTierRef.current.style.backgroundColor = tier.color;
-                    }
-                    if (capLevelRef.current)
-                        capLevelRef.current.textContent = `${d.level}%`;
-                    if (capBlurbRef.current) capBlurbRef.current.textContent = d.blurb;
-                    if (capFillRef.current)
-                        gsap.fromTo(
+                    const setCardContent = () => {
+                        if (capIconRef.current) capIconRef.current.textContent = d.icon;
+                        if (capTitleRef.current) capTitleRef.current.textContent = d.label;
+                        if (capTierRef.current) {
+                            capTierRef.current.textContent = tier.label;
+                            capTierRef.current.style.backgroundColor = tier.color;
+                        }
+                        if (capLevelRef.current)
+                            capLevelRef.current.textContent = `${d.level}%`;
+                        if (capBlurbRef.current) capBlurbRef.current.textContent = d.blurb;
+                    };
+                    gsap
+                        .timeline()
+                        .to(capRef.current, {
+                            autoAlpha: 0,
+                            y: 14,
+                            duration: 0.22,
+                            ease: "power2.in",
+                        })
+                        .add(setCardContent)
+                        .fromTo(
+                            capRef.current,
+                            { y: 26 },
+                            { autoAlpha: 1, y: 0, duration: 0.46, ease: "power3.out" },
+                        )
+                        .fromTo(
                             capFillRef.current,
                             { width: "0%" },
                             { width: `${d.level}%`, duration: 0.6, ease: "power2.out" },
+                            "<",
                         );
-                    gsap.fromTo(
-                        [capIconRef.current, capTitleRef.current, capBlurbRef.current],
-                        { y: 12, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.4, ease: "power3.out", stagger: 0.05 },
-                    );
                 });
                 tl.to({}, { duration: 1.15 });
             });
 
-            // 8. Restore the full web, settle
+            // 8. Restore the full web, settle — pull the camera back out. The info
+            //    window is dismissed here, right after the last competency's spotlight.
             tl.add(() => {
+                gsap.to(capRef.current, {
+                    autoAlpha: 0, y: 16, duration: 0.4, ease: "power2.in",
+                });
+                gsap.to(radBoxRef.current, {
+                    xPercent: 0,
+                    yPercent: 0,
+                    scale: 1,
+                    duration: 0.6,
+                    ease: "power2.inOut",
+                    transformOrigin: "50% 50%",
+                    onComplete: () => {
+                        if (radBoxRef.current) radBoxRef.current.style.filter = "none";
+                        if (stageRef.current) {
+                            stageRef.current.style.overflow = "visible";
+                            stageRef.current.style.maskImage = "none";
+                            stageRef.current.style.webkitMaskImage = "none";
+                        }
+                    },
+                });
                 nodes().forEach((node) => {
                     gsap.set(node, { zIndex: 1 });
                     gsap.to(node, { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" });
@@ -406,6 +505,10 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     ".rad-vertex",
                 ]);
                 if (sweepRef.current) gsap.killTweensOf(sweepRef.current);
+                if (radBoxRef.current) {
+                    gsap.killTweensOf(radBoxRef.current);
+                    radBoxRef.current.style.filter = "none";
+                }
             };
         }
     }, [onComplete, user.name, active]);
@@ -414,7 +517,6 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
         <WrappedShell
             sceneNumber="03"
             sceneLabel="Competencies"
-            marqueeText="strong points  //  measured  //  receipts attached"
             variant="blue"
             art={<CompetenciesArt />}
         >
@@ -425,10 +527,11 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     style={{ opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                 >
-                    <p className="font-figtree font-black text-[clamp(36px,5.4vw,84px)] leading-[0.95] tracking-tight whitespace-nowrap">
+                    <HeadlineScrim />
+                    <p className="relative font-figtree font-black text-[clamp(26px,4.2vw,62px)] leading-[0.95] tracking-tight whitespace-nowrap">
                         Have you ever wondered
                     </p>
-                    <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
+                    <p className="relative font-figtree font-bold text-2xl md:text-3xl mt-5">
                         how good are you now?
                     </p>
                 </div>
@@ -439,10 +542,11 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                 >
-                    <p className="font-figtree font-black text-[clamp(36px,5.4vw,84px)] leading-[0.95] tracking-tight whitespace-nowrap">
+                    <HeadlineScrim />
+                    <p className="relative font-figtree font-black text-[clamp(26px,4.2vw,62px)] leading-[0.95] tracking-tight whitespace-nowrap">
                         Here are your
                     </p>
-                    <p className="font-figtree font-bold text-2xl md:text-3xl mt-5">
+                    <p className="relative font-figtree font-bold text-2xl md:text-3xl mt-5">
                         * strong points *
                     </p>
                 </div>
@@ -453,11 +557,42 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0"
                 >
-                    {/* Web centered in the space above the fixed caption */}
-                    <div className="absolute inset-x-0 top-0 bottom-[168px] flex items-center justify-center">
+                    {/* Web centered in the space above the fixed caption. At rest the
+                        stage is unclipped so the full octagon (nodes included) can
+                        breathe; clipping + the soft edge mask are toggled on stageRef
+                        only during the spotlight sweep, where the dollied-in web would
+                        otherwise spill onto the caption. */}
+                    <div
+                        ref={stageRef}
+                        className="absolute inset-x-0 top-[-48px] bottom-[176px] flex items-center justify-center"
+                    >
+                        {/* Motion-blur filter, armed only during the spotlight sweep */}
+                        <svg className="absolute w-0 h-0" aria-hidden>
+                            <defs>
+                                <filter
+                                    id="comp-mblur"
+                                    x="-30%"
+                                    y="-30%"
+                                    width="160%"
+                                    height="160%"
+                                    colorInterpolationFilters="sRGB"
+                                >
+                                    <feGaussianBlur
+                                        ref={mblurRef}
+                                        in="SourceGraphic"
+                                        stdDeviation="0 0"
+                                    />
+                                </filter>
+                            </defs>
+                        </svg>
                         <div
+                            ref={radBoxRef}
                             className="rad-box relative"
-                            style={{ width: "min(70vmin, 640px)", height: "min(70vmin, 640px)" }}
+                            style={{
+                                width: "min(78vmin, 660px)",
+                                height: "min(78vmin, 660px)",
+                                willChange: "transform, filter",
+                            }}
                         >
                             <svg
                                 className="absolute inset-0 w-full h-full overflow-visible"
@@ -641,10 +776,10 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     <div
                         ref={capRef}
                         style={{ visibility: "hidden", opacity: 0 }}
-                        className="absolute inset-x-0 bottom-[72px] flex justify-center px-6"
+                        className="absolute inset-x-0 bottom-[64px] flex justify-center px-6"
                     >
                         <div
-                            className="w-full max-w-xl h-[88px] flex flex-col justify-center rounded-xl px-5"
+                            className="w-full max-w-2xl h-[112px] flex flex-col justify-center rounded-xl px-6"
                             style={{
                                 backgroundColor: "rgba(10,34,54,0.92)",
                                 border: "2px solid #0a2236",
@@ -686,7 +821,7 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                             </div>
                             <p
                                 ref={capBlurbRef}
-                                className="font-hind text-[11px] text-[#f2f2f2]/75 leading-snug mt-1.5 line-clamp-2"
+                                className="font-hind text-[14px] text-[#f2f2f2]/80 leading-snug mt-2 line-clamp-2"
                             >
                                 {domains[0].blurb}
                             </p>
@@ -738,14 +873,32 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                     style={{ visibility: "hidden", opacity: 0 }}
                     className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center"
                 >
-                    <p className="font-figtree font-black text-[clamp(36px,5.4vw,84px)] leading-[0.95] tracking-tight whitespace-nowrap">
+                    <p className="relative font-figtree font-black text-[clamp(26px,4.2vw,62px)] leading-[0.95] tracking-tight whitespace-nowrap">
                         Sharper than you think.
                     </p>
-                    <p className="font-figtree font-bold text-xl md:text-2xl mt-5 opacity-80">
+                    <p className="relative font-figtree font-bold text-xl md:text-2xl mt-5 opacity-80">
                         strong points, logged.
                     </p>
                 </div>
             </div>
         </WrappedShell>
+    );
+}
+
+// A soft radial wash that sits behind the centered headline text — lifts the words
+// off the busy ambient art so they never read as "overlapping" the graph.
+function HeadlineScrim() {
+    return (
+        <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+                width: "min(118%, 1120px)",
+                height: "62%",
+                background:
+                    "radial-gradient(60% 58% at 50% 50%, rgba(228,244,253,0.92) 0%, rgba(228,244,253,0.66) 42%, rgba(228,244,253,0) 78%)",
+                filter: "blur(6px)",
+            }}
+        />
     );
 }

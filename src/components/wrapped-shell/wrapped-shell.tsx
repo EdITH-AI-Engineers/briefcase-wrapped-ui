@@ -236,8 +236,8 @@ export function WrappedShell({
             >
                 <div
                     ref={stripRef}
-                    className="wrapped-strip h-1 w-full"
-                    style={{ backgroundColor: palette.ink }}
+                    className="wrapped-strip h-[3px] w-full"
+                    style={{ backgroundColor: palette.accent }}
                 />
                 {repeatedMarquee ? (
                     <div
@@ -246,8 +246,8 @@ export function WrappedShell({
                     >
                         <div
                             ref={marqueeRef}
-                            className="whitespace-nowrap font-montserrat font-bold uppercase tracking-[0.28em] text-[11px] py-1.5"
-                            style={{ color: palette.soft }}
+                            className="whitespace-nowrap font-montserrat font-semibold uppercase tracking-[0.42em] text-[10px] py-[7px]"
+                            style={{ color: palette.soft, opacity: 0.82 }}
                         >
                             <span className="mr-10">{repeatedMarquee}</span>
                             <span className="mr-10">{repeatedMarquee}</span>
@@ -264,21 +264,23 @@ export function WrappedShell({
 }
 
 function GridPattern({ stroke }: { stroke: string }) {
+    // A single airy blueprint grid that fades toward the center stage — present at
+    // the edges for structure, near-invisible where the content lives. The radial
+    // mask trades the flat "graph paper" look for atmospheric depth.
+    const fade =
+        "radial-gradient(120% 95% at 50% 40%, rgba(0,0,0,0.32) 16%, rgba(0,0,0,0.72) 58%, #000 100%)";
     return (
         <svg
             className="absolute inset-0 w-full h-full z-0 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
+            style={{ maskImage: fade, WebkitMaskImage: fade }}
             aria-hidden
         >
             <defs>
-                <pattern id="brut-grid" width="64" height="64" patternUnits="userSpaceOnUse">
-                    <path d="M 64 0 L 0 0 0 64" fill="none" stroke={stroke} strokeWidth="1.5" />
-                </pattern>
-                <pattern id="brut-grid-fine" width="16" height="16" patternUnits="userSpaceOnUse">
-                    <path d="M 16 0 L 0 0 0 16" fill="none" stroke={stroke} strokeWidth="0.5" opacity="0.5" />
+                <pattern id="brut-grid" width="72" height="72" patternUnits="userSpaceOnUse">
+                    <path d="M 72 0 L 0 0 0 72" fill="none" stroke={stroke} strokeWidth="1.25" />
                 </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#brut-grid-fine)" />
             <rect width="100%" height="100%" fill="url(#brut-grid)" />
         </svg>
     );

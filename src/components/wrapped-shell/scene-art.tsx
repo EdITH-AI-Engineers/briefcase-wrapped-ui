@@ -391,48 +391,35 @@ export function AchievementsArt() {
     );
 }
 
+// Competency intro art — scribbles & doodles in the margins, framing the headline
+// (same playbook as IntroArt: `.comp-pop` scales in/out, blob rotates, floaties bob,
+// scribbles draw on a dashed loop). No text — just hand-drawn marks.
 export function CompetenciesArt() {
     const wrapRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
         if (!wrapRef.current) return;
         const ctx = gsap.context(() => {
-            gsap.fromTo(
-                ".comp-bar",
-                { scaleY: 0 },
-                {
-                    scaleY: 1, duration: 1.1, ease: "expo.out",
-                    stagger: 0.12, delay: 0.4, transformOrigin: "50% 100%",
-                },
-            );
-            gsap.fromTo(
-                ".comp-hex",
-                { scale: 0, rotate: -30, opacity: 0 },
-                {
-                    scale: 1, rotate: 0, opacity: 1,
-                    duration: 0.8, ease: "back.out(2)", stagger: 0.1,
-                    delay: 0.6, transformOrigin: "50% 50%",
-                },
-            );
-            gsap.to(".comp-orbit", {
-                rotate: 360, duration: 32, ease: "none", repeat: -1, transformOrigin: "50% 50%",
+            // Pop the doodles in from nothing (set→to mirrors IntroArt and avoids the
+            // residual-translate GSAP leaves when you *fromTo*-scale SVG groups).
+            gsap.set(".comp-pop", { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
+            gsap.to(".comp-pop", {
+                scale: 1, opacity: 1, duration: 0.55, ease: "back.out(2.2)",
+                stagger: { each: 0.05, from: "random" }, delay: 0.4, transformOrigin: "50% 50%",
             });
-            gsap.fromTo(
-                ".comp-pct",
-                { opacity: 0, y: 16 },
-                { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, delay: 1.2, ease: "power3.out" },
-            );
+            // Continuous life.
+            gsap.to(".comp-blob", {
+                rotate: 360, duration: 26, ease: "none", repeat: -1, transformOrigin: "50% 50%",
+            });
+            gsap.to(".comp-float", {
+                y: -14, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true, stagger: 0.4,
+            });
+            gsap.to(".comp-scrib", {
+                strokeDashoffset: -32, duration: 1.4, ease: "none", repeat: -1,
+            });
         }, wrapRef);
         return () => ctx.revert();
     }, []);
-
-    const bars = [
-        { x: 60, h: 170, label: "PM", v: "65" },
-        { x: 130, h: 220, label: "PR", v: "75" },
-        { x: 200, h: 150, label: "PS", v: "60" },
-        { x: 270, h: 200, label: "PY", v: "70" },
-        { x: 340, h: 170, label: "JV", v: "65" },
-    ];
 
     return (
         <svg
@@ -442,88 +429,134 @@ export function CompetenciesArt() {
             preserveAspectRatio="xMidYMid slice"
             aria-hidden
         >
-            <g>
-                <line x1="40" y1="760" x2="400" y2="760" stroke="#0a2236" strokeWidth="5" />
-                {bars.map((b, i) => (
-                    <g key={i}>
-                        <rect className="comp-bar"
-                            x={b.x} y={760 - b.h} width="44" height={b.h}
-                            fill="#0a2236" stroke="#f2f2f2" strokeWidth="2.5"
-                        />
-                        <text className="comp-pct"
-                            x={b.x + 22} y={760 - b.h - 10} textAnchor="middle"
-                            fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="16" fill="#0a2236"
-                        >{b.v}</text>
-                        <text x={b.x + 22} y={784} textAnchor="middle"
-                            fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="13"
-                            letterSpacing="2" fill="#0a2236"
-                        >{b.label}</text>
-                    </g>
-                ))}
+            {/* Anchor blob — bottom-left (slow spin) */}
+            <g className="comp-pop comp-blob" style={{ transformOrigin: "200px 760px" }}>
+                <circle cx="200" cy="760" r="150" fill="#f4a261" opacity="0.92" />
+                <rect x="120" y="660" width="170" height="170" fill="none" stroke="#0a2236" strokeWidth="4" />
             </g>
 
-            <g className="comp-orbit" style={{ transformOrigin: "1400px 720px" }}>
-                <circle cx="1400" cy="720" r="170" fill="none" stroke="#0a2236" strokeWidth="2" strokeDasharray="4 8" />
-                <circle cx="1400" cy="550" r="10" fill="#f4a261" stroke="#0a2236" strokeWidth="3" />
-                <circle cx="1570" cy="720" r="10" fill="#0a2236" />
-                <circle cx="1400" cy="890" r="10" fill="#f2f2f2" stroke="#0a2236" strokeWidth="3" />
-                <circle cx="1230" cy="720" r="10" fill="#f4a261" />
+            {/* Floaty navy square, top-left */}
+            <g className="comp-float">
+                <rect className="comp-pop" x="120" y="150" width="78" height="78" fill="#0a2236" />
             </g>
 
-            <g className="comp-hex" style={{ transformOrigin: "1400px 720px" }}>
-                <polygon
-                    points="1400,640 1470,680 1470,760 1400,800 1330,760 1330,680"
-                    fill="#f4a261" stroke="#0a2236" strokeWidth="5"
-                />
-                <text x="1400" y="718" textAnchor="middle"
-                    fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="14"
-                    letterSpacing="2" fill="#0a2236"
-                >STRONG</text>
-                <text x="1400" y="752" textAnchor="middle"
-                    fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="30" fill="#0a2236"
-                >75%</text>
+            {/* Scribble loop, top-right (draws on a dashed loop) */}
+            <g className="comp-float">
+                <path className="comp-pop comp-scrib"
+                    d="M 1400 170 C 1392 122 1444 96 1496 108 C 1556 122 1580 172 1562 216 C 1544 256 1480 264 1438 242 C 1404 224 1396 200 1400 170 Z"
+                    fill="none" stroke="#0a2236" strokeWidth="6" strokeDasharray="3 14" strokeLinecap="round" />
+            </g>
+
+            {/* Triangle, bottom-right */}
+            <g className="comp-float">
+                <polygon className="comp-pop" points="1470,700 1556,830 1384,830"
+                    fill="#08a0e9" stroke="#0a2236" strokeWidth="5" />
+            </g>
+
+            {/* Dotted target circle, mid-right */}
+            <g className="comp-pop">
+                <circle cx="1330" cy="500" r="42" fill="none" stroke="#0a2236" strokeWidth="5" strokeDasharray="6 9" />
+                <circle cx="1330" cy="500" r="12" fill="#f4a261" stroke="#0a2236" strokeWidth="3" />
+            </g>
+
+            {/* Two bars, top-left */}
+            <g className="comp-pop">
+                <rect x="240" y="120" width="190" height="7" fill="#0a2236" />
+                <rect x="240" y="140" width="120" height="5" fill="#0a2236" opacity="0.55" />
+            </g>
+
+            {/* Sparkle, top-mid-left */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "520px 220px" }}>
+                <polygon points="520,186 530,212 556,222 530,232 520,258 510,232 484,222 510,212"
+                    fill="#f4a261" stroke="#0a2236" strokeWidth="3" />
+            </g>
+
+            {/* Plus, top-mid */}
+            <g className="comp-pop" style={{ transformOrigin: "1040px 215px" }}>
+                <rect x="1037" y="194" width="6" height="44" fill="#0a2236" />
+                <rect x="1018" y="213" width="44" height="6" fill="#0a2236" />
+            </g>
+
+            {/* Diamond outline, right */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "1420px 330px" }}>
+                <polygon points="1420,288 1462,330 1420,372 1378,330" fill="none" stroke="#0a2236" strokeWidth="5" />
+                <circle cx="1420" cy="330" r="6" fill="#08a0e9" />
+            </g>
+
+            {/* Concentric circles, mid-left */}
+            <g className="comp-pop" style={{ transformOrigin: "150px 390px" }}>
+                <circle cx="150" cy="390" r="36" fill="none" stroke="#0a2236" strokeWidth="4" />
+                <circle cx="150" cy="390" r="22" fill="none" stroke="#0a2236" strokeWidth="4" />
+                <circle cx="150" cy="390" r="9" fill="#f4a261" />
+            </g>
+
+            {/* Hash marks, mid-right */}
+            <g className="comp-pop">
+                <line x1="1300" y1="660" x2="1366" y2="660" stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+                <line x1="1300" y1="684" x2="1340" y2="684" stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+                <line x1="1300" y1="708" x2="1366" y2="708" stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+            </g>
+
+            {/* Curvy arrow doodle, left-low pointing up-right */}
+            <g className="comp-pop comp-float">
+                <path d="M 250 560 Q 300 500 380 470" fill="none" stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+                <polygon points="380,470 360,470 372,488" fill="#0a2236" />
+            </g>
+
+            {/* Bottom wavy underline (peach) */}
+            <path className="comp-pop"
+                d="M 470 800 Q 502 778 534 800 T 598 800 T 662 800 T 726 800 T 790 800 T 854 800 T 918 800 T 982 800 T 1046 800 T 1110 800"
+                fill="none" stroke="#f4a261" strokeWidth="6" strokeLinecap="round" />
+
+            {/* Bottom-mid sparkle (navy) */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "790px 760px" }}>
+                <polygon points="790,734 798,754 818,762 798,770 790,790 782,770 762,762 782,754" fill="#0a2236" />
+            </g>
+
+            {/* 4-point star, lower-left */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "560px 730px" }}>
+                <polygon points="560,708 569,726 588,730 569,734 560,752 551,734 532,730 551,726" fill="#0a2236" />
+            </g>
+
+            {/* Triangle outline, lower-mid */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "1010px 740px" }}>
+                <polygon points="1010,714 1036,760 984,760" fill="none" stroke="#0a2236" strokeWidth="4" strokeLinejoin="round" />
+            </g>
+
+            {/* X mark, right-low */}
+            <g className="comp-pop" style={{ transformOrigin: "1240px 760px" }}>
+                <line x1="1224" y1="744" x2="1256" y2="776" stroke="#0a2236" strokeWidth="6" strokeLinecap="round" />
+                <line x1="1256" y1="744" x2="1224" y2="776" stroke="#0a2236" strokeWidth="6" strokeLinecap="round" />
+            </g>
+
+            {/* Peach square accent, bottom-left near blob */}
+            <g className="comp-pop comp-float" style={{ transformOrigin: "360px 800px" }}>
+                <rect x="338" y="778" width="44" height="44" fill="#f4a261" stroke="#0a2236" strokeWidth="3" />
             </g>
         </svg>
     );
 }
 
+// Skills intro art — a construction site (the building gets built): tower crane,
+// hazard tape, hard hat, girder, ladder, cone, brick wall. `.con-pop` scales in/out,
+// `.con-float` bobs. No code/programming motifs.
 export function SkillsArt() {
     const wrapRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
         if (!wrapRef.current) return;
         const ctx = gsap.context(() => {
-            gsap.fromTo(
-                ".skill-tag",
-                { scale: 0, opacity: 0, y: 20 },
-                {
-                    scale: 1, opacity: 1, y: 0,
-                    duration: 0.7, ease: "back.out(2)", stagger: 0.1, delay: 0.4,
-                    transformOrigin: "50% 50%",
-                },
-            );
-            gsap.to(".skill-tag", {
-                y: "+=6", duration: 2.4, ease: "sine.inOut",
-                repeat: -1, yoyo: true, stagger: 0.15, delay: 1.2,
+            gsap.set(".con-pop", { scale: 0, opacity: 0, transformOrigin: "50% 50%" });
+            gsap.to(".con-pop", {
+                scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.8)",
+                stagger: { each: 0.05, from: "random" }, delay: 0.4, transformOrigin: "50% 50%",
             });
-            gsap.fromTo(
-                ".skill-brace",
-                { opacity: 0, x: (i: number) => (i === 0 ? -40 : 40) },
-                { opacity: 0.85, x: 0, duration: 0.9, ease: "expo.out", delay: 0.2 },
-            );
-            gsap.to(".skill-cursor", {
-                opacity: 0, duration: 0.5, repeat: -1, yoyo: true, ease: "steps(1)",
+            gsap.to(".con-float", {
+                y: -12, duration: 2.6, ease: "sine.inOut", repeat: -1, yoyo: true, stagger: 0.3,
             });
         }, wrapRef);
         return () => ctx.revert();
     }, []);
-
-    const tags = [
-        { x: 60, y: 760, w: 220, label: "</> Python", fill: "#0a2236", color: "#f4ead2", rot: -3 },
-        { x: 300, y: 760, w: 200, label: "{} Java", fill: "#f4ead2", color: "#0a2236", rot: 2 },
-        { x: 1100, y: 760, w: 240, label: "// Problem-Solving", fill: "#f4ead2", color: "#0a2236", rot: -2 },
-        { x: 1360, y: 760, w: 180, label: "* PM *", fill: "#0a2236", color: "#f4ead2", rot: 3 },
-    ];
 
     return (
         <svg
@@ -533,40 +566,111 @@ export function SkillsArt() {
             preserveAspectRatio="xMidYMid slice"
             aria-hidden
         >
-            <text
-                className="skill-brace"
-                x="20" y="500"
-                fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="300" fill="#0a2236"
-            >{"{"}</text>
-            <text
-                className="skill-brace"
-                x="1490" y="500"
-                fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="300" fill="#0a2236"
-            >{"}"}</text>
+            <defs>
+                <pattern id="con-hazard" width="30" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <rect width="30" height="30" fill="#f4a261" />
+                    <rect width="15" height="30" fill="#0a2236" />
+                </pattern>
+            </defs>
 
-            <g>
-                <rect x="60" y="120" width="240" height="44" fill="#0a2236" stroke="#0a2236" strokeWidth="3" />
-                <text x="180" y="150" textAnchor="middle"
-                    fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="22" fill="#f4ead2"
-                >&lt; Programming /&gt;</text>
+            {/* TOWER CRANE — left anchor, lifting a block (building the tower) */}
+            <g className="con-pop" style={{ transformOrigin: "320px 460px" }}>
+                <rect x="92" y="148" width="62" height="46" fill="#0a2236" />
+                <line x1="150" y1="171" x2="200" y2="171" stroke="#0a2236" strokeWidth="6" />
+                <rect x="186" y="172" width="34" height="600" fill="none" stroke="#0a2236" strokeWidth="6" />
+                <line x1="188" y1="180" x2="218" y2="320" stroke="#0a2236" strokeWidth="3" />
+                <line x1="218" y1="180" x2="188" y2="320" stroke="#0a2236" strokeWidth="3" />
+                <line x1="188" y1="480" x2="218" y2="620" stroke="#0a2236" strokeWidth="3" />
+                <line x1="218" y1="480" x2="188" y2="620" stroke="#0a2236" strokeWidth="3" />
+                <rect x="182" y="176" width="42" height="34" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                <polygon points="222,160 520,168 520,184 222,186" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                <line x1="270" y1="168" x2="300" y2="184" stroke="#0a2236" strokeWidth="2" />
+                <line x1="340" y1="168" x2="370" y2="184" stroke="#0a2236" strokeWidth="2" />
+                <line x1="410" y1="168" x2="440" y2="184" stroke="#0a2236" strokeWidth="2" />
+                <line x1="500" y1="186" x2="500" y2="252" stroke="#0a2236" strokeWidth="3" />
+                <g className="con-float">
+                    <rect x="474" y="254" width="52" height="36" rx="3" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                </g>
             </g>
 
-            {tags.map((t, i) => (
-                <g key={i} className="skill-tag" transform={`rotate(${t.rot} ${t.x + t.w / 2} ${t.y + 22})`}
-                    style={{ transformOrigin: `${t.x + t.w / 2}px ${t.y + 22}px` }}>
-                    <rect x={t.x} y={t.y} width={t.w} height="44" fill={t.fill} stroke="#0a2236" strokeWidth="3" />
-                    <text x={t.x + t.w / 2} y={t.y + 30} textAnchor="middle"
-                        fontFamily="Figtree, sans-serif" fontWeight="900" fontSize="22" fill={t.color}
-                    >{t.label}</text>
-                </g>
-            ))}
+            {/* HAZARD TAPE BAR — top-left (where the code tag used to be) */}
+            <g className="con-pop">
+                <rect x="60" y="112" width="250" height="34" fill="url(#con-hazard)" stroke="#0a2236" strokeWidth="4" />
+            </g>
 
-            <g>
-                <text x="1240" y="160"
-                    fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="18"
-                    letterSpacing="5" fill="#0a2236"
-                >YOUR.STACK</text>
-                <rect className="skill-cursor" x="1418" y="146" width="14" height="20" fill="#0a2236" />
+            {/* SPIRIT LEVEL — top-centre, above the headline */}
+            <g className="con-pop">
+                <rect x="690" y="150" width="220" height="30" rx="7" fill="#f4ead2" stroke="#0a2236" strokeWidth="4" />
+                <rect x="788" y="156" width="24" height="18" rx="9" fill="none" stroke="#0a2236" strokeWidth="3" />
+                <circle cx="800" cy="165" r="5" fill="#08a0e9" />
+                <line x1="734" y1="152" x2="734" y2="178" stroke="#0a2236" strokeWidth="2" />
+                <line x1="866" y1="152" x2="866" y2="178" stroke="#0a2236" strokeWidth="2" />
+            </g>
+
+            {/* HARD HAT — top-right */}
+            <g className="con-pop con-float">
+                <path d="M 1358 202 A 52 52 0 0 1 1462 202 Z" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                <rect x="1342" y="198" width="136" height="13" rx="6" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                <line x1="1410" y1="152" x2="1410" y2="200" stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+            </g>
+
+            {/* I-BEAM (H girder) — right-mid */}
+            <g className="con-pop con-float">
+                <rect x="1432" y="384" width="92" height="14" fill="#0a2236" />
+                <rect x="1470" y="384" width="16" height="112" fill="#0a2236" />
+                <rect x="1432" y="482" width="92" height="14" fill="#0a2236" />
+            </g>
+
+            {/* LADDER — right */}
+            <g className="con-pop">
+                <line x1="1378" y1="520" x2="1378" y2="700" stroke="#0a2236" strokeWidth="6" strokeLinecap="round" />
+                <line x1="1424" y1="520" x2="1424" y2="700" stroke="#0a2236" strokeWidth="6" strokeLinecap="round" />
+                {[540, 568, 596, 624, 652, 680].map((y) => (
+                    <line key={y} x1="1378" y1={y} x2="1424" y2={y} stroke="#0a2236" strokeWidth="5" strokeLinecap="round" />
+                ))}
+            </g>
+
+            {/* TRAFFIC CONE — bottom-right, lifted clear of the footer ticker */}
+            <g className="con-pop con-float">
+                {/* base slab */}
+                <rect x="1298" y="794" width="124" height="18" rx="6" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                <rect x="1310" y="786" width="100" height="12" rx="4" fill="#f4a261" stroke="#0a2236" strokeWidth="4" />
+                {/* cone body */}
+                <path d="M 1360 702 L 1406 788 Q 1360 798 1314 788 Z"
+                    fill="#f4a261" stroke="#0a2236" strokeWidth="4" strokeLinejoin="round" />
+                {/* lower reflective band */}
+                <polygon points="1328,762 1392,762 1400,778 1320,778" fill="#f4ead2" stroke="#0a2236" strokeWidth="2.5" />
+                {/* upper reflective band */}
+                <polygon points="1345,730 1375,730 1382,744 1338,744" fill="#f4ead2" stroke="#0a2236" strokeWidth="2.5" />
+                {/* tip cap */}
+                <rect x="1351" y="696" width="18" height="13" rx="5" fill="#0a2236" />
+            </g>
+
+            {/* BRICK WALL — bottom-left */}
+            <g className="con-pop">
+                {[0, 1, 2].map((row) =>
+                    [0, 1, 2, 3, 4].map((col) => {
+                        const y = 742 + row * 26;
+                        const off = row % 2 === 1 ? 27 : 0;
+                        const x = 70 + off + col * 54;
+                        return (
+                            <rect key={`${row}-${col}`} x={x} y={y} width="50" height="22"
+                                fill={(row + col) % 2 === 0 ? "#f4a261" : "#f4ead2"}
+                                stroke="#0a2236" strokeWidth="3" />
+                        );
+                    }),
+                )}
+            </g>
+
+            {/* BOLTS (hex nuts) */}
+            <g className="con-pop con-float">
+                <polygon points="1284,236 1306,248 1306,272 1284,284 1262,272 1262,248"
+                    fill="none" stroke="#0a2236" strokeWidth="4" />
+                <circle cx="1284" cy="260" r="6" fill="#0a2236" />
+            </g>
+            <g className="con-pop con-float">
+                <polygon points="630,188 648,198 648,218 630,228 612,218 612,198"
+                    fill="#0a2236" />
             </g>
         </svg>
     );

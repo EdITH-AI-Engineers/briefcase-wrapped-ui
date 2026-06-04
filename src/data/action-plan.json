@@ -1,0 +1,53 @@
+{
+  "student": "Anya Santos-Lim",
+  "program": "BS Computer Science",
+  "title": "Your route to 2027",
+  "subtitle": "five stops, one you — let's drive",
+  "stops": [
+    {
+      "area": "Systems & Infrastructure",
+      "icon": "🖧",
+      "reason": "Little evidence of cloud or distributed systems work.",
+      "recommendation": "Ship a small distributed service and deploy it to the cloud end-to-end.",
+      "course": "Cloud Infrastructure: Core Concepts",
+      "weeks": 4,
+      "tag": "First stop"
+    },
+    {
+      "area": "Data & Information Management",
+      "icon": "🗄️",
+      "reason": "Schemas stayed shallow; no advanced querying surfaced.",
+      "recommendation": "Design a real schema, then push it with advanced SQL and a NoSQL twist.",
+      "course": "Database Design & Data Modeling",
+      "weeks": 3,
+      "tag": "Next turn"
+    },
+    {
+      "area": "Information Assurance & Security",
+      "icon": "🔐",
+      "reason": "Security thinking was implicit, never demonstrated.",
+      "recommendation": "Threat-model one of your own apps and patch what you find.",
+      "course": "Threat Modeling Fundamentals",
+      "weeks": 5,
+      "tag": "Scenic detour"
+    },
+    {
+      "area": "Technical Communication",
+      "icon": "✍️",
+      "reason": "Strong code, thin documentation trail.",
+      "recommendation": "Write the docs your future teammate will thank you for.",
+      "course": "Technical Writing for Engineers",
+      "weeks": 2,
+      "tag": "Quick win"
+    },
+    {
+      "area": "Networks & Communication",
+      "icon": "🌐",
+      "reason": "Layered networking concepts were lightly evidenced.",
+      "recommendation": "Wire up the layers — build a tiny networked app from sockets up.",
+      "course": "Networking Foundations",
+      "weeks": 4,
+      "tag": "Final stop"
+    }
+  ]
+}
