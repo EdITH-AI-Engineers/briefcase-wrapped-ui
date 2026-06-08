@@ -11,6 +11,7 @@ import { WrappedCompetencies } from "@/components/competencies/competencies";
 import { WrappedSkills } from "@/components/skills/skills";
 import { WrappedActionPlan } from "@/components/action-plan/action-plan";
 import { WrappedSummary } from "@/components/summary/summary";
+import { WrappedOutro } from "@/components/outro/outro";
 
 const sections: SectionName[] = [
   "intro",
@@ -40,6 +41,7 @@ const sectionPanels: Partial<Record<SectionName, ComponentType<SectionPanelProps
   skills: ({ user, onComplete, active }) => <WrappedSkills user={user} onComplete={onComplete} active={active} />,
   actionPlan: ({ user, onComplete, active }) => <WrappedActionPlan user={user} onComplete={onComplete} active={active} />,
   summary: ({ user, onComplete, active }) => <WrappedSummary user={user} onComplete={onComplete} active={active} />,
+  end: ({ user, onComplete, active }) => <WrappedOutro user={user} onComplete={onComplete} active={active} />,
 };
 
 type LayerEntry = { key: number; section: SectionName };

@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
+import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { AchievementsArt } from "@/components/wrapped-shell/scene-art";
 import achievementsData from "@/data/achievements.json";
@@ -61,6 +62,7 @@ const CARD_TONES = [
 const toneFor = (i: number) => CARD_TONES[i % CARD_TONES.length];
 
 export function WrappedAchievments({ user, onComplete, active = true }: WrappedAchievmentsProps) {
+    const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
     const bentoRef = useRef<HTMLDivElement>(null);
@@ -72,6 +74,11 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
     const achievementSizes = buildSizeMap(achievements.length);
     const bentoCols = achievements.length <= 2 ? 2 : 4;
 
+    // Hide content before first paint so it never flashes during the slide-in.
+    useIsoLayoutEffect(() => {
+        if (rootRef.current) gsap.set(rootRef.current, { autoAlpha: 0 });
+    }, []);
+
     useEffect(() => {
         if (!active) return;
         if (
@@ -82,6 +89,7 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
             !finaleBottomRef.current
         ) return;
 
+        gsap.set(rootRef.current, { autoAlpha: 1 });
         gsap.set(readyRef.current, { autoAlpha: 0 });
 
         const split = SplitText.create(containerRef.current, {
@@ -314,6 +322,7 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
             art={<AchievementsArt />}
         >
             <div
+                ref={rootRef}
                 className="relative w-full h-full"
                 style={{ perspective: "800px" }}
             >

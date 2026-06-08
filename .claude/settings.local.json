@@ -6,7 +6,8 @@
       "mcp__plugin_playwright_playwright__browser_navigate",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
       "Read(//c/Users/PtrRaul/AppData/Local/ms-playwright/chromium-1223/chrome-win64/**)",
-      "Read(//c/Users/PtrRaul/AppData/Local/npm-cache/_npx/**)"
+      "Read(//c/Users/PtrRaul/AppData/Local/npm-cache/_npx/**)",
+      "Bash(node -e \"const d=require\\('./src/data/competencies.json'\\); console.log\\('overall', d.overall\\); console.log\\('tiers', JSON.stringify\\(d.tiers\\)\\);\")"
     ]
   }
 }

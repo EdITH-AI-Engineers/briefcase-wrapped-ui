@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
+import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { CompetenciesArt } from "@/components/wrapped-shell/scene-art";
 import competenciesData from "@/data/competencies.json";
@@ -74,6 +75,11 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
     const finaleRef = useRef<HTMLDivElement>(null);
     const finaleBottomRef = useRef<SVGSVGElement>(null);
 
+    // Hide content before first paint so it never flashes during the slide-in.
+    useIsoLayoutEffect(() => {
+        if (rootRef.current) gsap.set(rootRef.current, { autoAlpha: 0 });
+    }, []);
+
     useEffect(() => {
         if (!active) return;
         if (
@@ -86,6 +92,7 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
         )
             return;
 
+        gsap.set(rootRef.current, { autoAlpha: 1 });
         const finaleEl = finaleRef.current; // guarded non-null above
 
         // Global selectors on purpose: the marquee/strip and CompetenciesArt are
@@ -564,7 +571,7 @@ export function WrappedCompetencies({ user, onComplete, active = true }: Wrapped
                         otherwise spill onto the caption. */}
                     <div
                         ref={stageRef}
-                        className="absolute inset-x-0 top-[-48px] bottom-[176px] flex items-center justify-center"
+                        className="absolute inset-x-0 top-[40px] bottom-[150px] flex items-center justify-center"
                     >
                         {/* Motion-blur filter, armed only during the spotlight sweep */}
                         <svg className="absolute w-0 h-0" aria-hidden>

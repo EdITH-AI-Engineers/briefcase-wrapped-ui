@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
+import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { ActionPlanArt } from "@/components/wrapped-shell/scene-art";
 import planData from "@/data/action-plan.json";
@@ -101,6 +102,11 @@ export function WrappedActionPlan({ user, onComplete, active = true }: WrappedAc
     const sCourseRef = useRef<HTMLSpanElement>(null);
     const sWeeksRef = useRef<HTMLSpanElement>(null);
 
+    // Hide content before first paint so it never flashes during the slide-in.
+    useIsoLayoutEffect(() => {
+        if (rootRef.current) gsap.set(rootRef.current, { autoAlpha: 0 });
+    }, []);
+
     useEffect(() => {
         if (!active) return;
         if (
@@ -117,6 +123,7 @@ export function WrappedActionPlan({ user, onComplete, active = true }: WrappedAc
         const car = carRef.current;
 
         const ctx = gsap.context(() => {
+            gsap.set(rootRef.current, { autoAlpha: 1 });
             gsap.set(container2_Ref.current, { autoAlpha: 0 });
             gsap.set(car, { x: PATH[0].x, y: PATH[0].y, rotation: 180, transformOrigin: "50% 50%" });
             gsap.set(".ap-travel", { strokeDasharray: 1000, strokeDashoffset: 1000 });

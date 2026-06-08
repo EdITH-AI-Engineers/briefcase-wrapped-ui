@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useEffect, useRef } from "react";
+import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { SkillsArt } from "@/components/wrapped-shell/scene-art";
 import skillsData from "@/data/skills.json";
@@ -48,6 +49,11 @@ export function WrappedSkills({ user, onComplete, active = true }: WrappedSkills
     const buildingRef = useRef<HTMLDivElement>(null);
     const finaleRef = useRef<HTMLDivElement>(null);
 
+    // Hide content before first paint so it never flashes during the slide-in.
+    useIsoLayoutEffect(() => {
+        if (rootRef.current) gsap.set(rootRef.current, { autoAlpha: 0 });
+    }, []);
+
     useEffect(() => {
         if (!active) return;
         if (
@@ -62,6 +68,7 @@ export function WrappedSkills({ user, onComplete, active = true }: WrappedSkills
         const finaleEl = finaleRef.current;
 
         const ctx = gsap.context(() => {
+            gsap.set(rootRef.current, { autoAlpha: 1 });
             gsap.set(container2_Ref.current, { autoAlpha: 0 });
 
             const split = SplitText.create(containerRef.current, {

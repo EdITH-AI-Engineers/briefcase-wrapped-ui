@@ -179,13 +179,13 @@ export function WrappedShell({
 
             {/* Editorial viewfinder frame */}
             <div
-                className="absolute inset-[14px] z-20 pointer-events-none"
+                className="wrapped-chrome absolute inset-[14px] z-20 pointer-events-none"
                 style={{ border: `1.5px solid ${palette.ink}`, opacity: 0.16 }}
             />
 
             <div
                 ref={cornerTopRef}
-                className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-5"
+                className="wrapped-chrome absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-5"
                 style={{ color: palette.ink }}
             >
                 <div className="flex items-center gap-3">
@@ -231,7 +231,7 @@ export function WrappedShell({
 
             <div
                 ref={cornerBottomRef}
-                className="absolute bottom-0 left-0 right-0 z-20"
+                className="wrapped-chrome absolute bottom-0 left-0 right-0 z-20"
                 style={{ color: palette.ink }}
             >
                 <div
@@ -287,7 +287,7 @@ function GridPattern({ stroke }: { stroke: string }) {
 }
 
 function CornerTicks({ color }: { color: string }) {
-    const tick = "h-6 w-6 border-[3px] z-20 pointer-events-none";
+    const tick = "wrapped-chrome h-6 w-6 border-[3px] z-20 pointer-events-none";
     return (
         <>
             <div
