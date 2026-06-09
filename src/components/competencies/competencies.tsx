@@ -6,56 +6,36 @@ import { useEffect, useRef } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { CompetenciesArt } from "@/components/wrapped-shell/scene-art";
-import competenciesData from "@/data/competencies.json";
+import type { CompetenciesData } from "@/lib/scene-data";
 
 gsap.registerPlugin(SplitText);
 
 type WrappedCompetenciesProps = {
     user: { name: string };
+    data: CompetenciesData;
     onComplete?: () => void;
     active?: boolean;
 };
 
-const { domains, overall, tiers } = competenciesData;
-
-// ── Radar geometry (SVG viewBox is 0..100; the web lives inside it) ───────────
-const N = domains.length;
+// ── Radar geometry constants (data-independent; SVG viewBox is 0..100) ─────────
 const C = 50; // center
 const MAXR = 36; // outer web radius
 const NODER = 47; // domain-node ring radius, as % of the square stage
 const RING_FRACS = [0.25, 0.5, 0.75, 1];
-
-const angRad = (i: number) => ((-90 + (360 / N) * i) * Math.PI) / 180;
-const angDeg = (i: number) => (360 / N) * i; // 0 == straight up (domain 0)
-
-const pt = (r: number, i: number): [number, number] => [
-    C + r * Math.cos(angRad(i)),
-    C + r * Math.sin(angRad(i)),
-];
-
-// ── Camera (spotlight zoom) ───────────────────────────────────────────────────
-// When a domain is in focus we push the whole web with a translate+scale so the
-// focused node lands dead-center of the stage (both axes) and grows. Because C is
-// the box center, a node's offset from center is purely the NODER component.
 const ZOOM = 1.34; // how far we dolly in on the focused competency
-const camOffset = (i: number) => ({
-    ox: (NODER * Math.cos(angRad(i))) / 100, // fraction of box width
-    oy: (NODER * Math.sin(angRad(i))) / 100, // fraction of box height
-});
 
-// Octagonal "spider web" ring at a given fraction of MAXR.
-const ringPoints = (frac: number) =>
-    domains.map((_, i) => pt(frac * MAXR, i).join(",")).join(" ");
+export function WrappedCompetencies({ user, data, onComplete, active = true }: WrappedCompetenciesProps) {
+    const { domains, overall, tiers } = data;
+    const N = domains.length;
+    const angRad = (i: number) => ((-90 + (360 / N) * i) * Math.PI) / 180;
+    const angDeg = (i: number) => (360 / N) * i; // 0 == straight up (domain 0)
+    const pt = (r: number, i: number): [number, number] => [C + r * Math.cos(angRad(i)), C + r * Math.sin(angRad(i))];
+    // Camera: bring a focused node to centre (its offset from centre is the NODER component).
+    const camOffset = (i: number) => ({ ox: (NODER * Math.cos(angRad(i))) / 100, oy: (NODER * Math.sin(angRad(i))) / 100 });
+    const ringPoints = (frac: number) => domains.map((_, i) => pt(frac * MAXR, i).join(",")).join(" ");
+    const skillPoints = domains.map((dm, i) => pt((dm.level / 100) * MAXR, i).join(",")).join(" ");
+    const tierFor = (level: number) => tiers.find((t) => level >= t.min) ?? tiers[tiers.length - 1];
 
-// The proficiency polygon (your actual levels).
-const skillPoints = domains
-    .map((d, i) => pt((d.level / 100) * MAXR, i).join(","))
-    .join(" ");
-
-const tierFor = (level: number) =>
-    tiers.find((t) => level >= t.min) ?? tiers[tiers.length - 1];
-
-export function WrappedCompetencies({ user, onComplete, active = true }: WrappedCompetenciesProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);

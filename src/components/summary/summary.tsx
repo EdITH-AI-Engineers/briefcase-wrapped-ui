@@ -4,12 +4,14 @@ import gsap from "gsap";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
+import { playTrack, fadeOutCurrent, playSfx, stopSfx } from "@/lib/audio";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { SummaryArt } from "@/components/wrapped-shell/scene-art";
-import comp from "@/data/competencies.json";
+import type { ArchetypeData } from "@/lib/scene-data";
 
 type WrappedSummaryProps = {
     user: { name: string };
+    archetype: ArchetypeData;
     onComplete?: () => void;
     active?: boolean;
 };
@@ -41,8 +43,10 @@ const ARCHETYPES: Record<string, { name: string; image: string; aura: string; de
         desc: "Drawn to the unknown before they understood why. They learn by moving — restless, curious, and unafraid of being lost. The path finds them, not the other way around.",
     },
 };
-const TIER = comp.tiers.find((t) => comp.overall >= t.min) ?? comp.tiers[comp.tiers.length - 1];
-const ARCHE = ARCHETYPES[TIER.label] ?? ARCHETYPES.Emerging;
+function archetypeFor(archetype: ArchetypeData) {
+    const tier = archetype.tiers.find((t) => archetype.overall >= t.min) ?? archetype.tiers[archetype.tiers.length - 1];
+    return ARCHETYPES[tier.label] ?? ARCHETYPES.Emerging;
+}
 
 // A single "?" face of the mystery card. Both faces of the spinner use this so the
 // archetype is never glimpsed mid-spin.
@@ -72,7 +76,8 @@ function MysteryFace({ aura, flipped = false }: { aura: string; flipped?: boolea
     );
 }
 
-export function WrappedSummary({ user, onComplete, active = true }: WrappedSummaryProps) {
+export function WrappedSummary({ user, archetype, onComplete, active = true }: WrappedSummaryProps) {
+    const ARCHE = archetypeFor(archetype);
     const rootRef = useRef<HTMLDivElement>(null);
     const m1Ref = useRef<HTMLDivElement>(null);
     const m2Ref = useRef<HTMLDivElement>(null);
@@ -145,16 +150,22 @@ export function WrappedSummary({ user, onComplete, active = true }: WrappedSumma
             // 1. The little exchange.
             say(m1Ref.current, 1.3);
             say(m2Ref.current, 1.3);
+            // the light-switch sfx has ~1.5s of lead-in, so fire it as the "turn off
+            // the lights" line appears — its click lands as the room goes dark.
+            tl.add(() => playSfx("/sfx-switch.m4a", { volume: 0.85 }));
             tl.fromTo(m3Ref.current, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, "+=0.15");
             tl.to({}, { duration: 1.2 });
 
-            // 2. Lights off — flicker, black, chrome fades.
+            // 2. Lights off — overview-1 bows out with the lights, flicker, black, chrome fades.
+            tl.add(() => fadeOutCurrent());
             tl.to(blackRef.current, { autoAlpha: 0.55, duration: 0.08 });
             tl.to(blackRef.current, { autoAlpha: 0.1, duration: 0.09 });
             tl.to(blackRef.current, { autoAlpha: 0.7, duration: 0.07 });
             tl.to(blackRef.current, { autoAlpha: 1, duration: 0.5, ease: "power2.in" });
             tl.to(".wrapped-chrome", { autoAlpha: 0, duration: 0.4, ease: "power2.in" }, "<");
             tl.to(m3Ref.current, { autoAlpha: 0, duration: 0.4 }, "<");
+            // soft ambient bed fills the dark, from lights-off until the flashbang.
+            tl.add(() => playSfx("/sfx-ambient.m4a", { volume: 0.24, loop: true, fadeInMs: 1100 }));
 
             // 3. "Much better." then the oracle starts whispering.
             tl.fromTo(mbRef.current, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, "+=0.35");
@@ -191,13 +202,18 @@ export function WrappedSummary({ user, onComplete, active = true }: WrappedSumma
             // 1. card glides to the MIDDLE of the screen
             tl.to(cardRef.current, { x: () => dxToCenter(), scale: 1.08, duration: 0.6, ease: "power3.inOut" });
             // 2. it SPINS — long, slow at first, accelerating into a blur (still only "?")
+            tl.add(() => playSfx("/sfx-spinning.m4a", { volume: 0.5 }));
             tl.to(flipRef.current, { rotationY: 2880, duration: 3.6, ease: "power2.in" });
             // 3. FLASHBANG — the whole screen snaps to white at the peak
             tl.to(whiteRef.current, { autoAlpha: 1, duration: 0.09, ease: "power1.in" }, "-=0.08");
-            // 4. blinded — swap the mystery for the archetype behind the white
+            // 4. blinded — swap the mystery for the archetype behind the white, kill the
+            //    dark-phase sfx, and bring in overview-2 as the card is revealed.
             tl.add(() => {
                 gsap.set(flipRef.current, { autoAlpha: 0 });
                 gsap.set(scholarRef.current, { autoAlpha: 1 });
+                stopSfx("/sfx-ambient.m4a", { fadeMs: 250 });
+                stopSfx("/sfx-spinning.m4a", { fadeMs: 200 });
+                playTrack("/f-overview-2.m4a");
             });
             tl.to({}, { duration: 0.3 }); // held white
             // 5. CS2 recovery — the white drains away slowly, revealing the card

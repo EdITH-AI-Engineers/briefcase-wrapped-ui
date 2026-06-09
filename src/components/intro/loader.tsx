@@ -2,6 +2,7 @@
 
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
+import { playSfx, stopSfx } from "@/lib/audio";
 
 type BriefcaseLoaderProps = {
     onComplete: () => void;
@@ -37,6 +38,9 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
 
     useEffect(() => {
         if (!overlayRef.current) return;
+
+        // soft ambient bed under the loader (subject to autoplay unlock)
+        playSfx("/sfx-ambient.m4a", { volume: 0.22, loop: true, fadeInMs: 800 });
 
         const flapL = flapLeftRef.current;
         const flapR = flapRightRef.current;
@@ -118,6 +122,7 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
             onComplete: () => {
                 if (!completedRef.current) {
                     completedRef.current = true;
+                    stopSfx("/sfx-ambient.m4a", { fadeMs: 500 });
                     onComplete();
                 }
             },
@@ -125,6 +130,7 @@ export function BriefcaseLoader({ onComplete }: BriefcaseLoaderProps) {
 
         return () => {
             tl.kill();
+            stopSfx("/sfx-ambient.m4a", { fadeMs: 300 });
         };
     }, [onComplete]);
 

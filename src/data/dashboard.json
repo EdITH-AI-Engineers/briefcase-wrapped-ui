@@ -1,0 +1,1304 @@
+{
+  "dashboard": {
+    "run": {
+      "id": "run-20260609-194357",
+      "status": "success",
+      "frameworkVersion": "1.3.0"
+    },
+    "student": {
+      "id": "c6d8f0e1-7b4e-4a3c-8f1d-5a0b4c6d8f0e",
+      "firstName": "Maria",
+      "lastName": "Santos",
+      "name": "Maria Isabella Santos",
+      "program": "BSCS",
+      "specialization": "Software Engineering",
+      "headline": "Aspiring Software Developer | Passionate about Clean Code",
+      "biography": "Hi there! I'm Isabella, a third-year BSCS student focusing on Software Engineering. I love building efficient and maintainable code. Currently exploring different frameworks and always eager to learn new technologies.",
+      "yearLevel": 3,
+      "sparsity": "Sparse",
+      "evidenceCounts": {
+        "skills": 6,
+        "projects": 0,
+        "experience": 0,
+        "education": 0,
+        "certifications": 0,
+        "awards": 0,
+        "trainings": 1,
+        "organizations": 1
+      }
+    },
+    "overview": {
+      "overallScore": 50,
+      "idealScore": 65,
+      "ratingLabel": "Developing",
+      "summary": "Maria Isabella Santos is a third-year BSCS student with a specialization in Software Engineering, demonstrating strong foundational programming skills and a proactive approach to learning. Her profile shows proficiency in core programming languages and version control, with emerging evidence in systems understanding and a notable gap in practical application and formal project experience.",
+      "topIssues": [
+        "Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations.",
+        "The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership."
+      ],
+      "quickFixes": [
+        "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+        "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities."
+      ]
+    },
+    "competencies": [
+      {
+        "name": "Computing Foundations",
+        "level": "Proficient",
+        "score": 75,
+        "idealScore": 65,
+        "diagnosis": "Self-reported skills in Python, Java, and JavaScript, along with 'Problem Solving', indicate a strong grasp of programming fundamentals and algorithmic thinking, aligning with proficient application in academic contexts.",
+        "evidence": [
+          "Python: Expert, 85%",
+          "Java: Intermediate, 70%",
+          "JavaScript: Intermediate, 65%",
+          "Problem Solving: Expert, 88%"
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "bscs-po-1"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "KA-SDF"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "PROG-3"
+          }
+        ]
+      },
+      {
+        "name": "Systems & Infrastructure",
+        "level": "Emerging",
+        "score": 25,
+        "idealScore": 65,
+        "diagnosis": "The only evidence is attendance at an introductory webinar, suggesting a nascent understanding of systems and infrastructure concepts.",
+        "evidence": [
+          "Attended 'Webinar: Introduction to Cloud Computing' on March 15, 2024."
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "bscs-po-5"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "KA-SF"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "DESN-1"
+          }
+        ]
+      },
+      {
+        "name": "Data & Information Management",
+        "level": "Developing",
+        "score": 50,
+        "idealScore": 65,
+        "diagnosis": "Self-reported intermediate skill in SQL suggests an ability to apply data management concepts in familiar situations, likely through coursework.",
+        "evidence": [
+          "SQL: Intermediate, 60%"
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "bscs-po-2"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "KA-IM"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "DATM-2"
+          }
+        ]
+      },
+      {
+        "name": "Security, Ethics & Professional Responsibility",
+        "level": "Emerging",
+        "score": 25,
+        "idealScore": 65,
+        "diagnosis": "While the profile mentions 'clean code' and a desire to learn, there is no direct evidence of engagement with security principles, ethical considerations, or professional responsibility beyond general membership in a CS organization.",
+        "evidence": [
+          "Headline: 'Aspiring Software Developer | Passionate about Clean Code'",
+          "Short Biography: 'Hi there! I'm Isabella, a third-year BSCS student focusing on Software Engineering. I love building efficient and maintainable code. Currently exploring different frameworks and always eager to learn new technologies.'",
+          "Member of Computer Science Society since August 2023."
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "common-po-4"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "KA-SP"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "SCTY-1"
+          }
+        ]
+      },
+      {
+        "name": "Professional Communication",
+        "level": "Developing",
+        "score": 50,
+        "idealScore": 65,
+        "diagnosis": "The headline and biography demonstrate an ability to articulate career aspirations and interests, suggesting developing communication skills in a professional context.",
+        "evidence": [
+          "Headline: 'Aspiring Software Developer | Passionate about Clean Code'",
+          "Short Biography: 'Hi there! I'm Isabella, a third-year BSCS student focusing on Software Engineering. I love building efficient and maintainable code. Currently exploring different frameworks and always eager to learn new technologies.'"
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "common-po-2"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "KA-HCI"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "ETDL-2"
+          }
+        ]
+      },
+      {
+        "name": "Collaboration & Teamwork",
+        "level": "Developing",
+        "score": 50,
+        "idealScore": 65,
+        "diagnosis": "Membership in the Computer Science Society indicates participation in a group setting, suggesting developing collaboration skills.",
+        "evidence": [
+          "Member of Computer Science Society since August 2023."
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "common-po-3"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "DISP-COLLAB"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "LEDA-2"
+          }
+        ]
+      },
+      {
+        "name": "Self-Directed Learning & Innovation",
+        "level": "Proficient",
+        "score": 75,
+        "idealScore": 65,
+        "diagnosis": "The explicit statement about eagerness to learn, combined with the breadth of self-reported skills and attendance at a technical webinar, demonstrates a strong capacity for self-directed learning and initiative.",
+        "evidence": [
+          "Short Biography: 'Currently exploring different frameworks and always eager to learn new technologies.'",
+          "Skills: Python (Expert, 85%), Java (Intermediate, 70%), JavaScript (Intermediate, 65%), Git (Expert, 80%), SQL (Intermediate, 60%), Problem Solving (Expert, 88%)",
+          "Attended 'Webinar: Introduction to Cloud Computing' on March 15, 2024."
+        ],
+        "citations": [
+          {
+            "doc": "ched-25",
+            "clause": "common-po-1"
+          },
+          {
+            "doc": "cc2020",
+            "clause": "DISP-SELF"
+          },
+          {
+            "doc": "sfia-9",
+            "clause": "EMRG-2"
+          }
+        ]
+      }
+    ],
+    "strengths": [
+      {
+        "area": "Computing Foundations",
+        "evidence": [
+          "Python: Expert, 85%",
+          "Java: Intermediate, 70%",
+          "JavaScript: Intermediate, 65%",
+          "Problem Solving: Expert, 88%"
+        ]
+      },
+      {
+        "area": "Self-Directed Learning & Innovation",
+        "evidence": [
+          "Short Biography: 'Currently exploring different frameworks and always eager to learn new technologies.'",
+          "Skills: Python (Expert, 85%), Java (Intermediate, 70%), JavaScript (Intermediate, 65%), Git (Expert, 80%), SQL (Intermediate, 60%), Problem Solving (Expert, 88%)",
+          "Attended 'Webinar: Introduction to Cloud Computing' on March 15, 2024."
+        ]
+      }
+    ],
+    "gaps": [
+      {
+        "area": "Systems & Infrastructure",
+        "reason": "Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations.",
+        "recommendation": "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+        "search_keywords": [
+          "cloud computing basics",
+          "system design principles",
+          "introduction to networking"
+        ]
+      },
+      {
+        "area": "Security, Ethics & Professional Responsibility",
+        "reason": "The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership.",
+        "recommendation": "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+        "search_keywords": [
+          "secure coding practices",
+          "ethical hacking",
+          "professional ethics computing"
+        ]
+      }
+    ],
+    "skills": {
+      "hard": [
+        {
+          "name": "Python",
+          "rating": 85
+        },
+        {
+          "name": "Java",
+          "rating": 70
+        },
+        {
+          "name": "JavaScript",
+          "rating": 65
+        },
+        {
+          "name": "Git",
+          "rating": 80
+        },
+        {
+          "name": "SQL",
+          "rating": 60
+        }
+      ],
+      "soft": [
+        {
+          "name": "Problem Solving",
+          "rating": 88
+        }
+      ],
+      "uncategorized": []
+    },
+    "roadmap": {
+      "nodes": [
+        {
+          "y": 0,
+          "competency": "Systems & Infrastructure",
+          "objectives": [
+            "Study cloud computing basics, system design principles, introduction to networking to address this systems & infrastructure gap.",
+            "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+            "Document the completed work with concrete evidence that addresses: Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations."
+          ],
+          "id": "gap-0",
+          "label": "Systems & Infrastructure",
+          "detail": "Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations.",
+          "type": "gap",
+          "x": 0
+        },
+        {
+          "y": 0,
+          "competency": "Systems & Infrastructure",
+          "objectives": [
+            "Study cloud computing basics, system design principles, introduction to networking to address this systems & infrastructure gap.",
+            "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+            "Document the completed work with concrete evidence that addresses: Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations."
+          ],
+          "id": "course-0",
+          "label": "Learn",
+          "detail": "Study cloud computing basics, system design principles, introduction to networking to address this systems & infrastructure gap.",
+          "type": "course",
+          "x": 270
+        },
+        {
+          "y": 0,
+          "competency": "Systems & Infrastructure",
+          "objectives": [
+            "Study cloud computing basics, system design principles, introduction to networking to address this systems & infrastructure gap.",
+            "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+            "Document the completed work with concrete evidence that addresses: Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations."
+          ],
+          "id": "project-0",
+          "label": "Build",
+          "detail": "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+          "type": "project",
+          "x": 540
+        },
+        {
+          "y": 0,
+          "competency": "Systems & Infrastructure",
+          "objectives": [
+            "Study cloud computing basics, system design principles, introduction to networking to address this systems & infrastructure gap.",
+            "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+            "Document the completed work with concrete evidence that addresses: Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations."
+          ],
+          "id": "evidence-0",
+          "label": "Document",
+          "detail": "Document the completed work with concrete evidence that addresses: Evidence is limited to attendance at an introductory webinar, indicating a lack of demonstrated practical application or deeper understanding of system design, architecture, or operations.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 230,
+          "competency": "Security, Ethics & Professional Responsibility",
+          "objectives": [
+            "Study secure coding practices, ethical hacking, professional ethics computing to address this security, ethics & professional responsibility gap.",
+            "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+            "Document the completed work with concrete evidence that addresses: The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership."
+          ],
+          "id": "gap-1",
+          "label": "Security, Ethics & Professional Responsibility",
+          "detail": "The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership.",
+          "type": "gap",
+          "x": 0
+        },
+        {
+          "y": 230,
+          "competency": "Security, Ethics & Professional Responsibility",
+          "objectives": [
+            "Study secure coding practices, ethical hacking, professional ethics computing to address this security, ethics & professional responsibility gap.",
+            "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+            "Document the completed work with concrete evidence that addresses: The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership."
+          ],
+          "id": "course-1",
+          "label": "Learn",
+          "detail": "Study secure coding practices, ethical hacking, professional ethics computing to address this security, ethics & professional responsibility gap.",
+          "type": "course",
+          "x": 270
+        },
+        {
+          "y": 230,
+          "competency": "Security, Ethics & Professional Responsibility",
+          "objectives": [
+            "Study secure coding practices, ethical hacking, professional ethics computing to address this security, ethics & professional responsibility gap.",
+            "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+            "Document the completed work with concrete evidence that addresses: The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership."
+          ],
+          "id": "project-1",
+          "label": "Build",
+          "detail": "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+          "type": "project",
+          "x": 540
+        },
+        {
+          "y": 230,
+          "competency": "Security, Ethics & Professional Responsibility",
+          "objectives": [
+            "Study secure coding practices, ethical hacking, professional ethics computing to address this security, ethics & professional responsibility gap.",
+            "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+            "Document the completed work with concrete evidence that addresses: The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership."
+          ],
+          "id": "evidence-1",
+          "label": "Document",
+          "detail": "Document the completed work with concrete evidence that addresses: The profile lacks specific evidence of engagement with security concepts, ethical considerations, or professional responsibility beyond general statements about 'clean code' and organizational membership.",
+          "type": "evidence",
+          "x": 810
+        }
+      ],
+      "edges": [
+        {
+          "id": "gap-0-course-0",
+          "source": "gap-0",
+          "target": "course-0"
+        },
+        {
+          "id": "course-0-project-0",
+          "source": "course-0",
+          "target": "project-0"
+        },
+        {
+          "id": "project-0-evidence-0",
+          "source": "project-0",
+          "target": "evidence-0"
+        },
+        {
+          "id": "gap-1-course-1",
+          "source": "gap-1",
+          "target": "course-1"
+        },
+        {
+          "id": "course-1-project-1",
+          "source": "course-1",
+          "target": "project-1"
+        },
+        {
+          "id": "project-1-evidence-1",
+          "source": "project-1",
+          "target": "evidence-1"
+        }
+      ]
+    },
+    "learningMap": {
+      "programCode": "BSCSSE2025",
+      "programCategory": "CS - Software Engineering",
+      "targetYearLevel": 3,
+      "targetScore": 65,
+      "summary": "BSCSSE2025 (CS - Software Engineering): 12 missing and 0 needs-work skills for the Year 3 curriculum target.",
+      "idealSkills": [
+        {
+          "name": "Modeling and Simulation",
+          "courseCode": "CS0019",
+          "courseTitle": "Modeling and Simulation",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=modeling+and+simulation",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Modeling+and+Simulation&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Software Engineering",
+          "courseCode": "CS0025",
+          "courseTitle": "Software Engineering 1",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=software+engineering+1+software+engineering",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Software+Engineering&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Programming Fundamentals",
+          "courseCode": "CS0053",
+          "courseTitle": "Programming Tools and Techniques",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+tools+and+techniques+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Computer Graphics",
+          "courseCode": "CS0045",
+          "courseTitle": "Computer Graphics and Visual Computing",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=computer+graphics+and+visual+computing+computer+graphics",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Computer+Graphics&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Image Processing",
+          "courseCode": "CS0057",
+          "courseTitle": "Image Processing",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=image+processing",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Image+Processing&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Project Management",
+          "courseCode": "CS0027",
+          "courseTitle": "CS Project Management",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=cs+project+management+project+management",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Project+Management&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Software Engineering",
+          "courseCode": "CS0032",
+          "courseTitle": "SOFTWARE ENGINEERING 2",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=software+engineering+2+software+engineering",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Software+Engineering&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Programming Fundamentals",
+          "courseCode": "CS0035",
+          "courseTitle": "Programming Languages",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+languages+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Number Theory",
+          "courseCode": "CCS0047",
+          "courseTitle": "Number Theory",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=number+theory",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Number+Theory&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Cybersecurity",
+          "courseCode": "CS0029",
+          "courseTitle": "Information Assurance & Security 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=information+assurance+%26+security+1+cybersecurity",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Cybersecurity&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Software Project Development",
+          "courseCode": "CS0033",
+          "courseTitle": "CS Project 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=cs+project+1+software+project+development",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Software+Project+Development&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        },
+        {
+          "name": "Business Process Analysis",
+          "courseCode": "CS0061",
+          "courseTitle": "Business Process for Computing System",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "currentRating": null,
+          "targetRating": 45,
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=business+process+for+computing+system+business+process+analysis",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Business+Process+Analysis&entityType=COURSE&difficultyLevel=INTERMEDIATE"
+        }
+      ],
+      "nodes": [
+        {
+          "y": 0,
+          "skill": "Business Process Analysis",
+          "courseCode": "CS0061",
+          "courseTitle": "Business Process for Computing System",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=business+process+for+computing+system+business+process+analysis",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Business+Process+Analysis&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-0",
+          "label": "Business Process for Computing System",
+          "detail": "Junior Third Trimester: add or improve Business Process Analysis to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 0,
+          "skill": "Business Process Analysis",
+          "courseCode": "CS0061",
+          "courseTitle": "Business Process for Computing System",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=business+process+for+computing+system+business+process+analysis",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Business+Process+Analysis&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-0",
+          "label": "Learn",
+          "detail": "Study Business Process Analysis using Business Process for Computing System materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 0,
+          "skill": "Business Process Analysis",
+          "courseCode": "CS0061",
+          "courseTitle": "Business Process for Computing System",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=business+process+for+computing+system+business+process+analysis",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Business+Process+Analysis&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-0",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Business Process Analysis in the context of Business Process for Computing System.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 0,
+          "skill": "Business Process Analysis",
+          "courseCode": "CS0061",
+          "courseTitle": "Business Process for Computing System",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=business+process+for+computing+system+business+process+analysis",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Business+Process+Analysis&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-0",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Business Process Analysis and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 230,
+          "skill": "Computer Graphics",
+          "courseCode": "CS0045",
+          "courseTitle": "Computer Graphics and Visual Computing",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=computer+graphics+and+visual+computing+computer+graphics",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Computer+Graphics&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-1",
+          "label": "Computer Graphics and Visual Computing",
+          "detail": "Junior First Trimester: add or improve Computer Graphics to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 230,
+          "skill": "Computer Graphics",
+          "courseCode": "CS0045",
+          "courseTitle": "Computer Graphics and Visual Computing",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=computer+graphics+and+visual+computing+computer+graphics",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Computer+Graphics&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-1",
+          "label": "Learn",
+          "detail": "Study Computer Graphics using Computer Graphics and Visual Computing materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 230,
+          "skill": "Computer Graphics",
+          "courseCode": "CS0045",
+          "courseTitle": "Computer Graphics and Visual Computing",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=computer+graphics+and+visual+computing+computer+graphics",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Computer+Graphics&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-1",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Computer Graphics in the context of Computer Graphics and Visual Computing.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 230,
+          "skill": "Computer Graphics",
+          "courseCode": "CS0045",
+          "courseTitle": "Computer Graphics and Visual Computing",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=computer+graphics+and+visual+computing+computer+graphics",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Computer+Graphics&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-1",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Computer Graphics and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 460,
+          "skill": "Cybersecurity",
+          "courseCode": "CS0029",
+          "courseTitle": "Information Assurance & Security 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=information+assurance+%26+security+1+cybersecurity",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Cybersecurity&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-2",
+          "label": "Information Assurance & Security 1",
+          "detail": "Junior Third Trimester: add or improve Cybersecurity to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 460,
+          "skill": "Cybersecurity",
+          "courseCode": "CS0029",
+          "courseTitle": "Information Assurance & Security 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=information+assurance+%26+security+1+cybersecurity",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Cybersecurity&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-2",
+          "label": "Learn",
+          "detail": "Study Cybersecurity using Information Assurance & Security 1 materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 460,
+          "skill": "Cybersecurity",
+          "courseCode": "CS0029",
+          "courseTitle": "Information Assurance & Security 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=information+assurance+%26+security+1+cybersecurity",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Cybersecurity&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-2",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Cybersecurity in the context of Information Assurance & Security 1.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 460,
+          "skill": "Cybersecurity",
+          "courseCode": "CS0029",
+          "courseTitle": "Information Assurance & Security 1",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=information+assurance+%26+security+1+cybersecurity",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Cybersecurity&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-2",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Cybersecurity and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 690,
+          "skill": "Image Processing",
+          "courseCode": "CS0057",
+          "courseTitle": "Image Processing",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=image+processing",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Image+Processing&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-3",
+          "label": "Image Processing",
+          "detail": "Junior Second Trimester: add or improve Image Processing to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 690,
+          "skill": "Image Processing",
+          "courseCode": "CS0057",
+          "courseTitle": "Image Processing",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=image+processing",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Image+Processing&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-3",
+          "label": "Learn",
+          "detail": "Study Image Processing using Image Processing materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 690,
+          "skill": "Image Processing",
+          "courseCode": "CS0057",
+          "courseTitle": "Image Processing",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=image+processing",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Image+Processing&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-3",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Image Processing in the context of Image Processing.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 690,
+          "skill": "Image Processing",
+          "courseCode": "CS0057",
+          "courseTitle": "Image Processing",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=image+processing",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Image+Processing&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-3",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Image Processing and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 920,
+          "skill": "Modeling and Simulation",
+          "courseCode": "CS0019",
+          "courseTitle": "Modeling and Simulation",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=modeling+and+simulation",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Modeling+and+Simulation&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-4",
+          "label": "Modeling and Simulation",
+          "detail": "Junior First Trimester: add or improve Modeling and Simulation to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 920,
+          "skill": "Modeling and Simulation",
+          "courseCode": "CS0019",
+          "courseTitle": "Modeling and Simulation",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=modeling+and+simulation",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Modeling+and+Simulation&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-4",
+          "label": "Learn",
+          "detail": "Study Modeling and Simulation using Modeling and Simulation materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 920,
+          "skill": "Modeling and Simulation",
+          "courseCode": "CS0019",
+          "courseTitle": "Modeling and Simulation",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=modeling+and+simulation",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Modeling+and+Simulation&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-4",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Modeling and Simulation in the context of Modeling and Simulation.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 920,
+          "skill": "Modeling and Simulation",
+          "courseCode": "CS0019",
+          "courseTitle": "Modeling and Simulation",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=modeling+and+simulation",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Modeling+and+Simulation&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-4",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Modeling and Simulation and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 1150,
+          "skill": "Number Theory",
+          "courseCode": "CCS0047",
+          "courseTitle": "Number Theory",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=number+theory",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Number+Theory&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-5",
+          "label": "Number Theory",
+          "detail": "Junior Third Trimester: add or improve Number Theory to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 1150,
+          "skill": "Number Theory",
+          "courseCode": "CCS0047",
+          "courseTitle": "Number Theory",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=number+theory",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Number+Theory&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-5",
+          "label": "Learn",
+          "detail": "Study Number Theory using Number Theory materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 1150,
+          "skill": "Number Theory",
+          "courseCode": "CCS0047",
+          "courseTitle": "Number Theory",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=number+theory",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Number+Theory&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-5",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Number Theory in the context of Number Theory.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 1150,
+          "skill": "Number Theory",
+          "courseCode": "CCS0047",
+          "courseTitle": "Number Theory",
+          "year": "Junior",
+          "trimester": "Third Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=number+theory",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Number+Theory&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-5",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Number Theory and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 1380,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0053",
+          "courseTitle": "Programming Tools and Techniques",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+tools+and+techniques+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-6",
+          "label": "Programming Tools and Techniques",
+          "detail": "Junior First Trimester: add or improve Programming Fundamentals to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 1380,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0053",
+          "courseTitle": "Programming Tools and Techniques",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+tools+and+techniques+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-6",
+          "label": "Learn",
+          "detail": "Study Programming Fundamentals using Programming Tools and Techniques materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 1380,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0053",
+          "courseTitle": "Programming Tools and Techniques",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+tools+and+techniques+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-6",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Programming Fundamentals in the context of Programming Tools and Techniques.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 1380,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0053",
+          "courseTitle": "Programming Tools and Techniques",
+          "year": "Junior",
+          "trimester": "First Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+tools+and+techniques+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-6",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Programming Fundamentals and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        },
+        {
+          "y": 1610,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0035",
+          "courseTitle": "Programming Languages",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+languages+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-ideal-7",
+          "label": "Programming Languages",
+          "detail": "Junior Second Trimester: add or improve Programming Fundamentals to 45/100.",
+          "type": "ideal",
+          "x": 0
+        },
+        {
+          "y": 1610,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0035",
+          "courseTitle": "Programming Languages",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+languages+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-learn-7",
+          "label": "Learn",
+          "detail": "Study Programming Fundamentals using Programming Languages materials.",
+          "type": "learn",
+          "x": 270
+        },
+        {
+          "y": 1610,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0035",
+          "courseTitle": "Programming Languages",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+languages+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-practice-7",
+          "label": "Practice",
+          "detail": "Build a small artifact that proves Programming Fundamentals in the context of Programming Languages.",
+          "type": "practice",
+          "x": 540
+        },
+        {
+          "y": 1610,
+          "skill": "Programming Fundamentals",
+          "courseCode": "CS0035",
+          "courseTitle": "Programming Languages",
+          "year": "Junior",
+          "trimester": "Second Trimester",
+          "status": "missing",
+          "coursewareUrl": "https://paraverse.feutech.edu.ph/mflix/course/?search=programming+languages+programming+fundamentals",
+          "linkedinLearningUrl": "https://www.linkedin.com/learning/search?keywords=Programming+Fundamentals&entityType=COURSE&difficultyLevel=INTERMEDIATE",
+          "id": "learning-evidence-7",
+          "label": "Document",
+          "detail": "Add portfolio evidence for Programming Fundamentals and note the course/module source.",
+          "type": "evidence",
+          "x": 810
+        }
+      ],
+      "edges": [
+        {
+          "id": "learning-ideal-0-learning-learn-0",
+          "source": "learning-ideal-0",
+          "target": "learning-learn-0"
+        },
+        {
+          "id": "learning-learn-0-learning-practice-0",
+          "source": "learning-learn-0",
+          "target": "learning-practice-0"
+        },
+        {
+          "id": "learning-practice-0-learning-evidence-0",
+          "source": "learning-practice-0",
+          "target": "learning-evidence-0"
+        },
+        {
+          "id": "learning-ideal-1-learning-learn-1",
+          "source": "learning-ideal-1",
+          "target": "learning-learn-1"
+        },
+        {
+          "id": "learning-learn-1-learning-practice-1",
+          "source": "learning-learn-1",
+          "target": "learning-practice-1"
+        },
+        {
+          "id": "learning-practice-1-learning-evidence-1",
+          "source": "learning-practice-1",
+          "target": "learning-evidence-1"
+        },
+        {
+          "id": "learning-ideal-2-learning-learn-2",
+          "source": "learning-ideal-2",
+          "target": "learning-learn-2"
+        },
+        {
+          "id": "learning-learn-2-learning-practice-2",
+          "source": "learning-learn-2",
+          "target": "learning-practice-2"
+        },
+        {
+          "id": "learning-practice-2-learning-evidence-2",
+          "source": "learning-practice-2",
+          "target": "learning-evidence-2"
+        },
+        {
+          "id": "learning-ideal-3-learning-learn-3",
+          "source": "learning-ideal-3",
+          "target": "learning-learn-3"
+        },
+        {
+          "id": "learning-learn-3-learning-practice-3",
+          "source": "learning-learn-3",
+          "target": "learning-practice-3"
+        },
+        {
+          "id": "learning-practice-3-learning-evidence-3",
+          "source": "learning-practice-3",
+          "target": "learning-evidence-3"
+        },
+        {
+          "id": "learning-ideal-4-learning-learn-4",
+          "source": "learning-ideal-4",
+          "target": "learning-learn-4"
+        },
+        {
+          "id": "learning-learn-4-learning-practice-4",
+          "source": "learning-learn-4",
+          "target": "learning-practice-4"
+        },
+        {
+          "id": "learning-practice-4-learning-evidence-4",
+          "source": "learning-practice-4",
+          "target": "learning-evidence-4"
+        },
+        {
+          "id": "learning-ideal-5-learning-learn-5",
+          "source": "learning-ideal-5",
+          "target": "learning-learn-5"
+        },
+        {
+          "id": "learning-learn-5-learning-practice-5",
+          "source": "learning-learn-5",
+          "target": "learning-practice-5"
+        },
+        {
+          "id": "learning-practice-5-learning-evidence-5",
+          "source": "learning-practice-5",
+          "target": "learning-evidence-5"
+        },
+        {
+          "id": "learning-ideal-6-learning-learn-6",
+          "source": "learning-ideal-6",
+          "target": "learning-learn-6"
+        },
+        {
+          "id": "learning-learn-6-learning-practice-6",
+          "source": "learning-learn-6",
+          "target": "learning-practice-6"
+        },
+        {
+          "id": "learning-practice-6-learning-evidence-6",
+          "source": "learning-practice-6",
+          "target": "learning-evidence-6"
+        },
+        {
+          "id": "learning-ideal-7-learning-learn-7",
+          "source": "learning-ideal-7",
+          "target": "learning-learn-7"
+        },
+        {
+          "id": "learning-learn-7-learning-practice-7",
+          "source": "learning-learn-7",
+          "target": "learning-practice-7"
+        },
+        {
+          "id": "learning-practice-7-learning-evidence-7",
+          "source": "learning-practice-7",
+          "target": "learning-evidence-7"
+        }
+      ]
+    },
+    "recommendations": [
+      {
+        "title": "Systems & Infrastructure: cloud computing basics",
+        "provider": "LinkedIn Learning",
+        "reason": "Seek opportunities to work on projects involving system design or infrastructure, such as contributing to open-source projects that require understanding of deployment or configuration, or taking on coursework that involves building or managing systems.",
+        "relatedCompetency": "Systems & Infrastructure",
+        "url": "https://www.linkedin.com/learning/search?keywords=cloud+computing+basics&entityType=COURSE&difficultyLevel=BEGINNER"
+      },
+      {
+        "title": "Deepen with \"system design principles\"",
+        "provider": "LinkedIn Learning",
+        "reason": "Targeted emerging search for systems & infrastructure.",
+        "relatedCompetency": "Systems & Infrastructure",
+        "url": "https://www.linkedin.com/learning/search?keywords=system+design+principles&entityType=COURSE&difficultyLevel=BEGINNER"
+      },
+      {
+        "title": "Deepen with \"introduction to networking\"",
+        "provider": "LinkedIn Learning",
+        "reason": "Targeted emerging search for systems & infrastructure.",
+        "relatedCompetency": "Systems & Infrastructure",
+        "url": "https://www.linkedin.com/learning/search?keywords=introduction+to+networking&entityType=COURSE&difficultyLevel=BEGINNER"
+      },
+      {
+        "title": "Security, Ethics & Professional Responsibility: secure coding practices",
+        "provider": "LinkedIn Learning",
+        "reason": "Actively seek out resources and training on software security best practices, ethical hacking fundamentals, and professional conduct in computing. Consider projects that require implementing security measures or analyzing potential vulnerabilities.",
+        "relatedCompetency": "Security, Ethics & Professional Responsibility",
+        "url": "https://www.linkedin.com/learning/search?keywords=secure+coding+practices&entityType=COURSE&difficultyLevel=BEGINNER"
+      },
+      {
+        "title": "Deepen with \"ethical hacking\"",
+        "provider": "LinkedIn Learning",
+        "reason": "Targeted emerging search for security, ethics & professional responsibility.",
+        "relatedCompetency": "Security, Ethics & Professional Responsibility",
+        "url": "https://www.linkedin.com/learning/search?keywords=ethical+hacking&entityType=COURSE&difficultyLevel=BEGINNER"
+      },
+      {
+        "title": "Deepen with \"professional ethics computing\"",
+        "provider": "LinkedIn Learning",
+        "reason": "Targeted emerging search for security, ethics & professional responsibility.",
+        "relatedCompetency": "Security, Ethics & Professional Responsibility",
+        "url": "https://www.linkedin.com/learning/search?keywords=professional+ethics+computing&entityType=COURSE&difficultyLevel=BEGINNER"
+      }
+    ],
+    "references": [
+      {
+        "id": "slate",
+        "title": "Student assessment slate (derived from CHED CMO 25, CC2020, SFIA 9)",
+        "url": "internal://assessment-slate"
+      },
+      {
+        "id": "ched-25",
+        "title": "CHED CMO No. 25 Series of 2015 — PSGs for BS Computer Science, BS Information Systems, and BS Information Technology",
+        "url": "https://ched.gov.ph/wp-content/uploads/2017/10/CMO-no.-25-s.-2015.pdf"
+      },
+      {
+        "id": "ched-87",
+        "title": "CHED CMO No. 87 Series of 2017 — PSG for BS Computer Engineering",
+        "url": "https://ched.gov.ph/wp-content/uploads/2018/04/CMO-87-s.-2017-BS-Computer-Engineering.pdf"
+      },
+      {
+        "id": "cc2020",
+        "title": "ACM/IEEE-CS/AAAI Computing Curricula 2020: Paradigms for Global Computing Education",
+        "url": "https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf"
+      },
+      {
+        "id": "sfia-9",
+        "title": "Skills Framework for the Information Age (SFIA), version 9",
+        "url": "https://sfia-online.org/en/sfia-9"
+      }
+    ],
+    "narrative": "## Profile Snapshot\n\nMaria Isabella Santos is a third-year Bachelor of Science in Computer Science (BSCS) student specializing in Software Engineering. She presents herself as an aspiring software developer with a passion for clean code and a strong drive for continuous learning, actively exploring new technologies and frameworks.\n\n## Competency Assessment\n\n**Computing Foundations:** Maria demonstrates a **Proficient** level in Computing Foundations, evidenced by her self-reported expert skills in Python and Problem Solving, and intermediate skills in Java and JavaScript [ched-25:bscs-po-1, cc2020:KA-SDF, sfia-9:PROG-3]. Her high percentages in these areas suggest consistent application in academic or guided contexts.\n\n**Systems & Infrastructure:** Her engagement with Systems & Infrastructure is currently **Emerging**. The primary evidence is her attendance at an introductory webinar on Cloud Computing [ched-25:bscs-po-5, cc2020:KA-SF, sfia-9:DESN-1]. This indicates a nascent awareness rather than practical application.\n\n**Data & Information Management:** Maria shows **Developing** proficiency in Data & Information Management, supported by her intermediate self-assessment in SQL [ched-25:bscs-po-2, cc2020:KA-IM, sfia-9:DATM-2]. This suggests she can apply these skills in familiar, likely coursework-related, situations.\n\n**Security, Ethics & Professional Responsibility:** This area is assessed as **Emerging**. While her profile mentions a passion for 'clean code' and she is a member of the Computer Science Society, there is no direct evidence of her engaging with specific security practices, ethical dilemmas, or professional responsibilities [ched-25:common-po-4, cc2020:KA-SP, sfia-9:SCTY-1].\n\n**Professional Communication:** Maria exhibits **Developing** Professional Communication skills, as indicated by her clear and concise headline and short biography articulating her career goals and learning interests [ched-25:common-po-2, cc2020:KA-HCI, sfia-9:ETDL-2].\n\n**Collaboration & Teamwork:** Her involvement as a member of the Computer Science Society suggests **Developing** Collaboration & Teamwork skills, indicating participation in group activities [ched-25:common-po-3, cc2020:DISP-COLLAB, sfia-9:LEDA-2].\n\n**Self-Directed Learning & Innovation:** Maria strongly exhibits **Proficient** Self-Directed Learning & Innovation. Her biography explicitly states her eagerness to learn new technologies, complemented by her diverse skill set and attendance at a technical webinar, showcasing proactive learning and initiative [ched-25:common-po-1, cc2020:DISP-SELF, sfia-9:EMRG-2].\n\n## Development Trajectory\n\nMaria's strengths lie in her robust **Computing Foundations** and a clear commitment to **Self-Directed Learning & Innovation**. Her proficiency in core programming languages like Python, Java, and JavaScript, coupled with strong problem-solving abilities, positions her well for software development roles [sfia-9:PROG-3]. Her proactive approach to acquiring new knowledge, as evidenced by her exploration of frameworks and webinar attendance, is a significant asset [cc2020:DISP-SELF]. She also shows developing capabilities in Data Management (SQL) and Professional Communication, stemming from her coursework and self-study efforts [sfia-9:DATM-2, ched-25:common-po-2].\n\n## Outlook & Next Steps\n\nTo further enhance her profile, Maria should focus on developing her **Systems & Infrastructure** and **Security, Ethics & Professional Responsibility** competencies. For Systems & Infrastructure, seeking project-based learning opportunities, such as contributing to open-source projects involving system deployment or engaging in coursework focused on system design, would be beneficial [sfia-9:DESN-1]. To address the gap in Security, Ethics & Professional Responsibility, she could actively pursue training in secure coding practices and ethical considerations in computing, perhaps by undertaking projects that require implementing security measures [ched-25:common-po-4, cc2020:KA-SP]. Continued engagement in her Computer Science Society membership will also support her developing collaboration skills [cc2020:DISP-COLLAB].\n\n---\n\n## References\n\nThe analysis and recommendations above are grounded on the following frozen references. Clause IDs in square brackets throughout this report (e.g., `[ched-25:bscs-po-1]`, `[cc2020:KA-SDF]`, `[sfia-9:PROG-4]`) trace each claim to one of these sources.\r\n\r\n1. **Commission on Higher Education (CHED), Republic of the Philippines.** *CHED Memorandum Order No. 25, Series of 2015 — Revised Policies, Standards and Guidelines for the Bachelor of Science in Computer Science (BSCS), Bachelor of Science in Information Systems (BSIS), and Bachelor of Science in Information Technology (BSIT) Programs.* Quezon City: CHED, 2015. Canonical path: [ched.gov.ph/wp-content/uploads/2017/10/CMO-no.-25-s.-2015.pdf](https://ched.gov.ph/wp-content/uploads/2017/10/CMO-no.-25-s.-2015.pdf) (currently Cloudflare-restricted to automated clients). Stable mirror — Internet Archive Wayback snapshot (2022-08-13, 57 pages): [web.archive.org/web/20220813024444/https://ched.gov.ph/wp-content/uploads/2017/10/CMO-no.-25-s.-2015.pdf](https://web.archive.org/web/20220813024444/https://ched.gov.ph/wp-content/uploads/2017/10/CMO-no.-25-s.-2015.pdf). Cited as `ched-25`.\r\n\r\n2. **Commission on Higher Education (CHED), Republic of the Philippines.** *CHED Memorandum Order No. 87, Series of 2017 — Policies, Standards and Guidelines for the Bachelor of Science in Computer Engineering (BSCpE) Program.* Quezon City: CHED, 2017. Canonical path: [ched.gov.ph/wp-content/uploads/2018/04/CMO-87-s.-2017-BS-Computer-Engineering.pdf](https://ched.gov.ph/wp-content/uploads/2018/04/CMO-87-s.-2017-BS-Computer-Engineering.pdf) (currently Cloudflare-restricted). Stable mirror — Internet Archive Wayback snapshot (2022-08-13, 81 pages): [web.archive.org/web/20220813023347/https://ched.gov.ph/wp-content/uploads/2018/04/CMO-87-s.-2017-BS-Computer-Engineering.pdf](https://web.archive.org/web/20220813023347/https://ched.gov.ph/wp-content/uploads/2018/04/CMO-87-s.-2017-BS-Computer-Engineering.pdf). Cited as `ched-87`.\r\n\r\n3. **Association for Computing Machinery (ACM) & IEEE Computer Society.** *Computing Curricula 2020 (CC2020): Paradigms for Global Computing Education — Final Report.* New York: ACM, 31 December 2020. ISBN 978-1-4503-9059-7. [https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf](https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf). Cited as `cc2020`.\r\n\r\n4. **SFIA Foundation.** *Skills Framework for the Information Age (SFIA), version 9.* London: SFIA Foundation, October 2024. [https://sfia-online.org/en/sfia-9](https://sfia-online.org/en/sfia-9). Per-skill canonical URLs take the form `https://sfia-online.org/en/sfia-9/skills/<CODE>`. Cited as `sfia-9`. Used under the SFIA Personal User Licence; descriptors in this report are paraphrased, with canonical URLs provided for authoritative wording.\r\n\r\n*Framework bundle version and run identifier are recorded in each run's `manifest.json`. Citations in a narrative resolve against the bundle version in effect at the time the narrative was generated — rerunning under a newer bundle may produce different narratives even from the same profile.*\r\n\r\n*Provenance of the paraphrases in each doc (bundle v1.3.0, 2026-04-23): the SFIA 9 skill list was verified skill-by-skill against the live pages at https://sfia-online.org/en/sfia-9/skills/. The CC2020 11-disposition list was verified by name against public reproductions of the CC2020 disposition table. Both CHED CMOs were rasterized from their Wayback snapshots at 300 DPI and OCR'd via tesseract 5; raw OCR text lives outside this bundle at `../evaluation-frameworks/ocr/` (cmo-25-s2015.ocr.txt, cmo-87-s2017.ocr.txt). The CHED CMO 87 program-outcome structure (12 letter-labeled outcomes (a)–(l) in ABET EC-2000 style) was cross-checked verbatim against the OCR of §6 Institutional and Program Outcomes; paraphrases updated where they diverged. The CHED CMO 25 Program Outcomes (§6.1 common outcomes (a)–(e); §6.3A BSCS CS01–CS10; §6.3B BSIS IS01–IS10; §6.3C BSIT IT01–IT13) were cross-checked against OCR and the paraphrased wording revised to match; earlier template-based entries that did not exist in the CMO itself were removed.*\n"
+  }
+}

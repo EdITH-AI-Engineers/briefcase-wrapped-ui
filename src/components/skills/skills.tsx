@@ -6,23 +6,17 @@ import { useEffect, useRef } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { SkillsArt } from "@/components/wrapped-shell/scene-art";
-import skillsData from "@/data/skills.json";
+import type { SkillsData } from "@/lib/scene-data";
 
 gsap.registerPlugin(SplitText);
 
 type WrappedSkillsProps = {
     user: { name: string };
+    data: SkillsData;
     onComplete?: () => void;
     active?: boolean;
 };
 
-const { mastery, gaps } = skillsData;
-
-// A 9-storey tower: top 4 mastery floors, an elided floor (···), then the 4 biggest
-// skill gaps. Warm/bright at the top, cooling toward the base.
-const TOP_MASTERY = mastery.slice(0, 4);
-// The 4 biggest gaps (lowest levels) — the weakest skill is the ground floor.
-const TOP_GAPS = gaps.slice(-4);
 const MASTERY_FILL = ["#f4a261", "#f6b277", "#f8c590", "#f3dcae"];
 const GAP_FILL = ["#b6ddf0", "#92cde9", "#5fbbe1", "#08a0e9"];
 
@@ -30,19 +24,23 @@ type Row =
     | { type: "floor"; floor: number; fill: string; name: string; icon: string; level: number; kind: "mastery" | "gap" }
     | { type: "gap-marker" };
 
-const ROWS: Row[] = [
-    ...TOP_MASTERY.map((s, i) => ({
-        type: "floor" as const, floor: 9 - i, fill: MASTERY_FILL[i],
-        name: s.name, icon: s.icon, level: s.level, kind: "mastery" as const,
-    })),
-    { type: "gap-marker" as const },
-    ...TOP_GAPS.map((s, i) => ({
-        type: "floor" as const, floor: 4 - i, fill: GAP_FILL[i],
-        name: s.name, icon: s.icon, level: s.level, kind: "gap" as const,
-    })),
-];
+export function WrappedSkills({ user, data, onComplete, active = true }: WrappedSkillsProps) {
+    // A tower: top mastery floors, an elided floor (···), then the biggest skill
+    // gaps. Warm/bright at the top, cooling toward the base.
+    const TOP_MASTERY = data.mastery.slice(0, 4);
+    const TOP_GAPS = data.gaps.slice(-4);
+    const ROWS: Row[] = [
+        ...TOP_MASTERY.map((s, i) => ({
+            type: "floor" as const, floor: 9 - i, fill: MASTERY_FILL[i],
+            name: s.name, icon: s.icon, level: s.level, kind: "mastery" as const,
+        })),
+        { type: "gap-marker" as const },
+        ...TOP_GAPS.map((s, i) => ({
+            type: "floor" as const, floor: 4 - i, fill: GAP_FILL[i % GAP_FILL.length],
+            name: s.name, icon: s.icon, level: s.level, kind: "gap" as const,
+        })),
+    ];
 
-export function WrappedSkills({ user, onComplete, active = true }: WrappedSkillsProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);

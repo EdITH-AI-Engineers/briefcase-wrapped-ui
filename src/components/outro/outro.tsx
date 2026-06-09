@@ -34,7 +34,7 @@ const LINES = [
     "See you in 2027.",
 ];
 
-export function WrappedOutro({ active = true }: WrappedOutroProps) {
+export function WrappedOutro({ active = true, onComplete }: WrappedOutroProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const lightRef = useRef<HTMLDivElement>(null);
     const stageRef = useRef<HTMLDivElement>(null);
@@ -86,9 +86,11 @@ export function WrappedOutro({ active = true }: WrappedOutroProps) {
             tl.to(dotRef.current, { y: 104, duration: 0.45, ease: "power2.in" });
             tl.to([flapL, flapR], { strokeDashoffset: FLAP_LEN, duration: 0.6, ease: "power3.inOut", stagger: 0.05 }, "-=0.3");
 
-            // 4. the diamond + circle collapse, then drop
-            tl.to(stageRef.current, { scaleY: 0.06, duration: 0.3, ease: "power2.in" }, "-=0.05");
-            tl.to(stageRef.current, { y: 860, autoAlpha: 0, duration: 0.8, ease: "power2.in" });
+            // 4. the diamond + circle collapse by shrinking (keeping their shape), then drop away
+            tl.to(stageRef.current, { scale: 0.42, duration: 0.34, ease: "power2.inOut", transformOrigin: "50% 55%" }, "-=0.05");
+            tl.to(stageRef.current, { scale: 0.16, y: 720, autoAlpha: 0, duration: 0.78, ease: "power2.in" });
+            // 5. the Wrapped is over — hand off to the full analysis report.
+            tl.add(() => onComplete?.(), "+=0.4");
         });
 
         return () => ctx.revert();

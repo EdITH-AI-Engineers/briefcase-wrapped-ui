@@ -6,17 +6,16 @@ import { useEffect, useRef } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { ActionPlanArt } from "@/components/wrapped-shell/scene-art";
-import planData from "@/data/action-plan.json";
+import type { ActionPlanData } from "@/lib/scene-data";
 
 gsap.registerPlugin(SplitText);
 
 type WrappedActionPlanProps = {
     user: { name: string };
+    data: ActionPlanData;
     onComplete?: () => void;
     active?: boolean;
 };
-
-const { stops } = planData;
 
 // ── Route follows the storyboard line: it DROPS down the left, hits a checkpoint
 //    and JOGS right, hits another, then keeps DESCENDING through the rest — one map
@@ -81,7 +80,8 @@ const heading = (a: PNode, b: PNode) => {
     return { rot: 0, word: "North" };
 };
 
-export function WrappedActionPlan({ user, onComplete, active = true }: WrappedActionPlanProps) {
+export function WrappedActionPlan({ user, data, onComplete, active = true }: WrappedActionPlanProps) {
+    const { stops } = data;
     const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);
@@ -203,7 +203,7 @@ export function WrappedActionPlan({ user, onComplete, active = true }: WrappedAc
                 // the car centred as it travels toward the next checkpoint/map.
                 tl.to(cam, { ...travelBox(node.x, node.y), duration: dur, ease: "power1.inOut", onUpdate: applyCam }, "<");
 
-                if (node.stop !== undefined) {
+                if (node.stop !== undefined && stops[node.stop]) {
                     const idx = node.stop;
                     const s = stops[idx];
                     // Arrived — push in on the checkpoint (this page's destination).
@@ -311,7 +311,7 @@ export function WrappedActionPlan({ user, onComplete, active = true }: WrappedAc
                         })}
 
                         {/* ── Landmark per checkpoint (its respective design, beside the line) ── */}
-                        {CHECKPOINTS.map((p) => {
+                        {CHECKPOINTS.filter((p) => stops[p.stop]).map((p) => {
                             const side = SIDES[p.stop];
                             const bx = p.x + (side === "left" ? -224 : 224);
                             const by = p.y - 64;

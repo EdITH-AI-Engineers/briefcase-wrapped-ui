@@ -6,12 +6,13 @@ import { useEffect, useRef } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { AchievementsArt } from "@/components/wrapped-shell/scene-art";
-import achievementsData from "@/data/achievements.json";
+import type { AchievementsData } from "@/lib/scene-data";
 
 gsap.registerPlugin(SplitText);
 
 type WrappedAchievmentsProps = {
     user: { name: string };
+    data: AchievementsData;
     onComplete?: () => void;
     active?: boolean;
 };
@@ -61,7 +62,7 @@ const CARD_TONES = [
 ];
 const toneFor = (i: number) => CARD_TONES[i % CARD_TONES.length];
 
-export function WrappedAchievments({ user, onComplete, active = true }: WrappedAchievmentsProps) {
+export function WrappedAchievments({ user, data, onComplete, active = true }: WrappedAchievmentsProps) {
     const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const readyRef = useRef<HTMLDivElement>(null);
@@ -70,7 +71,7 @@ export function WrappedAchievments({ user, onComplete, active = true }: WrappedA
     const finaleRef = useRef<HTMLDivElement>(null);
     const finaleBottomRef = useRef<SVGSVGElement>(null);
 
-    const achievements = achievementsData.achievements;
+    const achievements = data.achievements;
     const achievementSizes = buildSizeMap(achievements.length);
     const bentoCols = achievements.length <= 2 ? 2 : 4;
 
