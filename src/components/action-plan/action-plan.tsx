@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 import { WrappedShell } from "@/components/wrapped-shell/wrapped-shell";
 import { ActionPlanArt } from "@/components/wrapped-shell/scene-art";
@@ -22,55 +22,62 @@ type WrappedActionPlanProps = {
 //    per checkpoint as the camera follows the line down/right/down. Tall canvas; the
 //    camera window scrolls through it. Every leg is due N / E / S / W. ─────────────
 const CANVAS_W = 1280;
-const CANVAS_H = 2450;
 const WIN_W = 960;
 const WIN_H = 540;
-type PNode = { x: number; y: number; stop?: number };
-const PATH: PNode[] = [
-    { x: 430, y: 140 }, // start, top
-    { x: 430, y: 560, stop: 0 }, // ↓ drop — checkpoint 1 (turn right)
-    { x: 940, y: 560, stop: 1 }, // → jog right — checkpoint 2
-    { x: 940, y: 880 }, { x: 500, y: 880 }, // ↓ then jog LEFT
-    { x: 500, y: 1140, stop: 2 }, // ↓ — checkpoint 3 (left)
-    { x: 500, y: 1380 }, { x: 960, y: 1380 }, // ↓ then jog RIGHT
-    { x: 960, y: 1640, stop: 3 }, // ↓ — checkpoint 4 (right)
-    { x: 960, y: 1880 }, { x: 520, y: 1880 }, // ↓ then jog LEFT
-    { x: 520, y: 2140, stop: 4 }, // ↓ — checkpoint 5 (finish, bottom-left)
-];
-const ROUTE_POINTS = PATH.map((p) => `${p.x},${p.y}`).join(" ");
-const SEGS = PATH.slice(1).map((p, i) => ({ len: Math.abs(p.x - PATH[i].x) + Math.abs(p.y - PATH[i].y) }));
-const TOTAL = SEGS.reduce((s, g) => s + g.len, 0);
-const CUM: number[] = [0];
-SEGS.forEach((g, i) => CUM.push(CUM[i] + g.len / TOTAL));
 const SPEED = 900; // viewBox units / second
+type PNode = { x: number; y: number; stop?: number };
+type Scenery = { kind: "tree" | "house" | "pond"; x: number; y: number; s?: number };
 
-// Which side of the road each checkpoint's landmark + bus stop sit on.
-const SIDES: ("left" | "right")[] = ["left", "right", "left", "right", "right"];
-const CHECKPOINTS = PATH.filter((p): p is Required<PNode> => p.stop !== undefined);
-// Scenery sprinkled through the open parts of the map — trees line the road, with
-// the odd house and pond for a lived-in, drive-through feel.
-const SCENERY: { kind: "tree" | "house" | "pond"; x: number; y: number; s?: number }[] = [
-    // top
-    { kind: "tree", x: 120, y: 220, s: 1.1 }, { kind: "tree", x: 300, y: 185, s: 0.8 },
-    { kind: "tree", x: 1080, y: 205, s: 1.15 }, { kind: "tree", x: 1200, y: 345, s: 0.8 },
-    { kind: "tree", x: 1055, y: 460, s: 0.95 }, { kind: "tree", x: 345, y: 665, s: 1.05 },
-    // upper-mid
-    { kind: "tree", x: 140, y: 900, s: 1 }, { kind: "tree", x: 700, y: 1000, s: 0.85 },
-    { kind: "tree", x: 770, y: 1230, s: 1.05 }, { kind: "tree", x: 1100, y: 760, s: 1 },
-    { kind: "tree", x: 1205, y: 985, s: 0.8 }, { kind: "tree", x: 1090, y: 1180, s: 1.05 },
-    { kind: "tree", x: 140, y: 1230, s: 0.9 }, { kind: "tree", x: 345, y: 1330, s: 1.1 },
-    // lower-mid
-    { kind: "tree", x: 700, y: 1610, s: 0.95 }, { kind: "tree", x: 800, y: 1755, s: 1.1 },
-    { kind: "tree", x: 1095, y: 1455, s: 0.9 }, { kind: "tree", x: 1100, y: 1810, s: 1 },
-    { kind: "tree", x: 1210, y: 1985, s: 0.8 }, { kind: "tree", x: 175, y: 1640, s: 1 },
-    { kind: "tree", x: 320, y: 1735, s: 0.85 },
-    // bottom
-    { kind: "tree", x: 180, y: 2040, s: 1.1 }, { kind: "tree", x: 330, y: 2265, s: 0.9 },
-    { kind: "tree", x: 905, y: 2205, s: 1 }, { kind: "tree", x: 660, y: 2090, s: 0.85 },
-    // houses + ponds
-    { kind: "house", x: 1085, y: 1380, s: 1 }, { kind: "house", x: 235, y: 1560, s: 1 },
-    { kind: "pond", x: 215, y: 330 }, { kind: "pond", x: 1130, y: 1700 },
-];
+// Route columns + spacing — the road snakes down, alternating left/right, one
+// checkpoint per stop.
+const COL_L = 430;
+const COL_R = 940;
+const TOP_Y = 140;
+const FIRST_Y = 540;
+const ROW_GAP = 430;
+
+// Trees/houses/ponds sprinkled deterministically through the open margins, scaled
+// to whatever canvas height the route ends up at.
+function buildScenery(H: number): Scenery[] {
+    const items: Scenery[] = [];
+    const lanes = [120, 235, 1045, 1185];
+    let k = 1;
+    for (let y = 200; y < H - 120; y += 175) {
+        const kind: Scenery["kind"] = k % 9 === 0 ? "house" : k % 13 === 0 ? "pond" : "tree";
+        items.push({ kind, x: lanes[k % lanes.length] + ((k * 29) % 36) - 18, y: y + ((k * 47) % 70), s: 0.8 + ((k * 17) % 40) / 100 });
+        if (k % 2 === 0) items.push({ kind: "tree", x: lanes[(k + 2) % lanes.length] + ((k * 23) % 30) - 15, y: y + 70, s: 0.82 + ((k * 11) % 30) / 100 });
+        k++;
+    }
+    return items;
+}
+
+// Build the whole route + derived geometry for N stops (dynamic to the API).
+function buildRoute(n: number) {
+    const count = Math.max(1, n);
+    const path: PNode[] = [{ x: COL_L, y: TOP_Y }];
+    for (let i = 0; i < count; i++) {
+        const col = i % 2 === 0 ? COL_L : COL_R;
+        const y = FIRST_Y + i * ROW_GAP;
+        if (i > 0) {
+            const prevCol = (i - 1) % 2 === 0 ? COL_L : COL_R;
+            const jogY = y - ROW_GAP * 0.42;
+            path.push({ x: prevCol, y: jogY }, { x: col, y: jogY });
+        }
+        path.push({ x: col, y, stop: i });
+    }
+    const lastCol = (count - 1) % 2 === 0 ? COL_L : COL_R;
+    const lastY = FIRST_Y + (count - 1) * ROW_GAP;
+    path.push({ x: lastCol, y: lastY + 210 });
+    const CANVAS_H = lastY + 400;
+    const ROUTE_POINTS = path.map((p) => `${p.x},${p.y}`).join(" ");
+    const SEGS = path.slice(1).map((p, i) => ({ len: Math.abs(p.x - path[i].x) + Math.abs(p.y - path[i].y) }));
+    const TOTAL = SEGS.reduce((s, g) => s + g.len, 0);
+    const CUM: number[] = [0];
+    SEGS.forEach((g, i) => CUM.push(CUM[i] + g.len / TOTAL));
+    const SIDES: ("left" | "right")[] = Array.from({ length: count }, (_, i) => (i % 2 === 0 ? "left" : "right"));
+    const CHECKPOINTS = path.filter((p): p is Required<PNode> => p.stop !== undefined);
+    return { PATH: path, ROUTE_POINTS, SEGS, TOTAL, CUM, SIDES, CHECKPOINTS, SCENERY: buildScenery(CANVAS_H), CANVAS_H };
+}
 
 // Car points NORTH at 0°.
 const heading = (a: PNode, b: PNode) => {
@@ -82,6 +89,8 @@ const heading = (a: PNode, b: PNode) => {
 
 export function WrappedActionPlan({ user, data, onComplete, active = true }: WrappedActionPlanProps) {
     const { stops } = data;
+    // The road is generated for exactly however many stops the API returns.
+    const { PATH, ROUTE_POINTS, SEGS, TOTAL, CUM, SIDES, CHECKPOINTS, SCENERY, CANVAS_H } = useMemo(() => buildRoute(stops.length), [stops.length]);
     const rootRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const container2_Ref = useRef<HTMLDivElement>(null);
@@ -272,7 +281,9 @@ export function WrappedActionPlan({ user, data, onComplete, active = true }: Wra
 
                 {/* Headline two */}
                 <div ref={container2_Ref} style={{ visibility: "hidden", opacity: 0 }} className="absolute inset-0 flex flex-col justify-center items-center text-[#0a2236] text-center">
-                    <p className="font-figtree font-black text-[clamp(38px,6.4vw,86px)] leading-[0.95] tracking-tight whitespace-nowrap">Five stops to a sharper you</p>
+                    <p className="font-figtree font-black text-[clamp(38px,6.4vw,86px)] leading-[0.95] tracking-tight whitespace-nowrap">
+                        {(["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][stops.length] ?? stops.length)} stop{stops.length === 1 ? "" : "s"} to a sharper you
+                    </p>
                 </div>
 
                 {/* ── The map ── */}

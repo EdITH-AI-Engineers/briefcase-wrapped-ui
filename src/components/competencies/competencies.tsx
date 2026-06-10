@@ -723,7 +723,7 @@ export function WrappedCompetencies({ user, data, onComplete, active = true }: W
                                         }}
                                     >
                                         <div
-                                            className="rad-node-inner flex items-center gap-1.5 rounded-full pl-1.5 pr-2.5 py-1"
+                                            className="rad-node-inner flex items-center gap-1.5 rounded-2xl pl-1.5 pr-2.5 py-1"
                                             style={{
                                                 backgroundColor: tier.color,
                                                 border: "2px solid #0a2236",
@@ -742,11 +742,11 @@ export function WrappedCompetencies({ user, data, onComplete, active = true }: W
                                             >
                                                 {d.icon}
                                             </span>
-                                            <span className="flex flex-col leading-none">
-                                                <span className="font-figtree font-black text-[11px] text-[#0a2236] whitespace-nowrap">
-                                                    {d.short}
+                                            <span className="flex flex-col leading-[1.04]">
+                                                <span className="font-figtree font-black text-[10.5px] text-[#0a2236] max-w-[112px] text-balance">
+                                                    {d.label}
                                                 </span>
-                                                <span className="font-montserrat font-bold text-[9px] text-[#0a2236]/65 tracking-wide">
+                                                <span className="font-montserrat font-bold text-[9px] text-[#0a2236]/65 tracking-wide mt-0.5">
                                                     {d.level}%
                                                 </span>
                                             </span>

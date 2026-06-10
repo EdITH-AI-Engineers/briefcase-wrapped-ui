@@ -6,15 +6,14 @@ import { WrappedIntro } from "@/components/intro/intro";
 import { BriefcaseLoader } from "@/components/intro/loader";
 import { StartGate } from "@/components/intro/start-gate";
 import gsap from "gsap";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { WrappedCompetencies } from "@/components/competencies/competencies";
 import { WrappedSkills } from "@/components/skills/skills";
 import { WrappedActionPlan } from "@/components/action-plan/action-plan";
 import { WrappedSummary } from "@/components/summary/summary";
 import { WrappedOutro } from "@/components/outro/outro";
-import { Report } from "@/components/report/report";
 import { playSection, fadeOutCurrent } from "@/lib/audio";
-import type { Dashboard } from "@/lib/get-dashboard";
 import type { CompetenciesData, SkillsData, ActionPlanData, AchievementsData, ArchetypeData } from "@/lib/scene-data";
 
 const sections: SectionName[] = ["intro", "achievements", "competencies", "skills", "actionPlan", "summary", "end"];
@@ -30,8 +29,9 @@ export type SceneData = {
 type LayerEntry = { key: number; section: SectionName };
 type PendingAnim = { key: number; direction: 1 | -1 } | null;
 
-export function WrappedExperience({ reportData, userName, sceneData }: { reportData: Dashboard; userName: string; sceneData: SceneData }) {
+export function WrappedExperience({ userName, sceneData }: { userName: string; sceneData: SceneData }) {
     const user = { name: userName };
+    const router = useRouter();
 
     const [layers, setLayers] = useState<LayerEntry[]>([{ key: 0, section: "intro" }]);
     const [selectedSection, setSelectedSection] = useState<SectionName>("intro");
@@ -39,9 +39,8 @@ export function WrappedExperience({ reportData, userName, sceneData }: { reportD
     const [loaderDone, setLoaderDone] = useState(false);
     const [started, setStarted] = useState(false);
     const [gateOpen, setGateOpen] = useState(true);
-    const [reportOpen, setReportOpen] = useState(false);
+    const [leaving, setLeaving] = useState(false);
 
-    const reportRef = useRef<HTMLDivElement>(null);
     const selectedSectionRef = useRef<SectionName>("intro");
 
     const handleLoaderComplete = useCallback(() => {
@@ -80,23 +79,18 @@ export function WrappedExperience({ reportData, userName, sceneData }: { reportD
         if (next) goToSection(next, true);
     }, [goToSection]);
 
-    // The outro fires onComplete after the briefcase collapses — hand off to the
-    // full analysis report. Every other section just advances.
-    const revealReport = useCallback(() => {
-        setReportOpen(true);
-        fadeOutCurrent({ fadeMs: 1600 });
-    }, []);
+    // The outro fires onComplete after the briefcase collapses. The report is no
+    // longer embedded here — fade the story out and hand off to the dashboard at "/".
+    const finish = useCallback(() => {
+        setLeaving(true);
+        fadeOutCurrent({ fadeMs: 1100 });
+        window.setTimeout(() => router.push("/"), 950);
+    }, [router]);
 
     const handleComplete = useCallback(() => {
-        if (selectedSectionRef.current === "end") revealReport();
+        if (selectedSectionRef.current === "end") finish();
         else goToNextSection();
-    }, [goToNextSection, revealReport]);
-
-    useEffect(() => {
-        if (reportOpen && reportRef.current) {
-            gsap.fromTo(reportRef.current, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out" });
-        }
-    }, [reportOpen]);
+    }, [goToNextSection, finish]);
 
     useEffect(() => {
         const pending = pendingAnim.current;
@@ -163,17 +157,14 @@ export function WrappedExperience({ reportData, userName, sceneData }: { reportD
                 ))}
             </div>
 
-            {!reportOpen && <SectionControl sections={sections} selectedSection={selectedSection} onSelectSection={goToSection} />}
+            <SectionControl sections={sections} selectedSection={selectedSection} onSelectSection={goToSection} />
 
             {started && !loaderDone && <BriefcaseLoader onComplete={handleLoaderComplete} />}
 
             {gateOpen && <StartGate onStart={() => setStarted(true)} onClose={() => setGateOpen(false)} />}
 
-            {reportOpen && (
-                <div ref={reportRef} className="fixed inset-0 z-[200] overflow-y-auto" style={{ visibility: "hidden" }}>
-                    <Report data={reportData} />
-                </div>
-            )}
+            {/* Hand-off fade to the dashboard */}
+            <div className="pointer-events-none fixed inset-0 z-[300] bg-[#06131d] transition-opacity duration-[900ms]" style={{ opacity: leaving ? 1 : 0 }} />
         </main>
     );
 }

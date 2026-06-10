@@ -108,46 +108,110 @@ export function toSkills(d: Dashboard): SkillsData {
 
 export function toActionPlan(d: Dashboard): ActionPlanData {
     const tags = ["First stop", "Next turn", "Scenic detour", "Quick win", "Final stop"];
-    const used = new Set(d.gaps.map((g) => g.area));
     const recFor = (area: string) => d.recommendations.find((r) => r.relatedCompetency === area)?.title?.replace(/^.*?:\s*/, "") ?? `Level up ${area}`;
-    const fromGaps = d.gaps.map((g) => ({ area: g.area, reason: g.reason, recommendation: g.recommendation, course: recFor(g.area) }));
-    const lowComps = [...d.competencies]
-        .sort((a, b) => a.score - b.score)
-        .filter((c) => !used.has(c.name))
-        .map((c) => ({ area: c.name, reason: c.diagnosis, recommendation: `Build concrete evidence and deepen ${c.name}.`, course: recFor(c.name) }));
-    const merged = [...fromGaps, ...lowComps].slice(0, 5);
+    // One stop per real gap/roadmap — no padding. The scene's route is dynamic to
+    // however many the API returns. If there are no gaps, fall back to the two
+    // lowest-scoring competencies so the road still has somewhere to go.
+    let items = d.gaps.map((g) => ({ area: g.area, reason: g.reason, recommendation: g.recommendation }));
+    if (items.length === 0) {
+        items = [...d.competencies]
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 2)
+            .map((c) => ({ area: c.name, reason: c.diagnosis, recommendation: `Build concrete evidence and deepen ${c.name}.` }));
+    }
     return {
         student: `${d.student.firstName} ${d.student.lastName}`,
         program: d.student.program,
         title: `Your route to ${Number(d.student.yearLevel) >= 4 ? "graduation" : "next year"}`,
-        subtitle: `${merged.length} stops, one you — let's drive`,
-        stops: merged.map((s, i) => ({
+        subtitle: `${items.length} stop${items.length === 1 ? "" : "s"}, one you — let's drive`,
+        stops: items.map((s, i) => ({
             area: s.area,
             icon: compIcon(s.area),
             reason: s.reason,
             recommendation: s.recommendation,
-            course: s.course,
+            course: recFor(s.area),
             weeks: 3 + (i % 3),
-            tag: tags[i] ?? "Stop",
+            tag: tags[i] ?? `Stop ${i + 1}`,
         })),
     };
 }
 
+// The current school year runs Aug (Y-1) → Jul (Y); "and counting", so derive it
+// from today: Aug onward belongs to the next-ending year.
+export function schoolYearWindow(now = new Date()) {
+    const endYear = now.getMonth() >= 7 ? now.getFullYear() + 1 : now.getFullYear();
+    return { start: new Date(endYear - 1, 7, 1), end: new Date(endYear, 6, 31, 23, 59, 59), label: `${endYear - 1}–${endYear}` };
+}
+
+function parseLooseDate(v: unknown): Date | null {
+    if (v == null) return null;
+    const s = String(v).trim();
+    if (!s || /present|current|ongoing/i.test(s)) return null;
+    const d = new Date(s);
+    if (!Number.isNaN(d.getTime())) return d;
+    const ym = s.match(/([A-Za-z]+)\s+(\d{4})/);
+    if (ym) {
+        const d2 = new Date(`${ym[1]} 1, ${ym[2]}`);
+        if (!Number.isNaN(d2.getTime())) return d2;
+    }
+    const yo = s.match(/(\d{4})/);
+    return yo ? new Date(Number(yo[1]), 0, 1) : null;
+}
+
+type EvItem = Record<string, unknown>;
+const FAR_FUTURE = new Date(8640000000000000);
+const EPOCH = new Date(0);
+
+// Achievements = the student's evidence items that fall in (or are still active
+// during) the current school year. Old one-off items drop off; ongoing roles stay.
 export function toAchievements(d: Dashboard): AchievementsData {
     const colors = ["#08a0e9", "#f4a261", "#f4ead2", "#00c9ff", "#e07a3b", "#0a2236"];
-    const year = String(d.student.yearLevel);
+    const win = schoolYearWindow();
+    const ev = d.student.evidenceCounts as unknown as Record<string, EvItem[]>;
+    const txt = (...vals: unknown[]) => (vals.find((v) => typeof v === "string" && v.trim()) as string | undefined)?.trim() ?? "";
+    const CATS: { key: string; icon: string; ranged: boolean; title: (e: EvItem) => string; sub: (e: EvItem) => string }[] = [
+        { key: "experience", icon: "💼", ranged: true, title: (e) => txt(e.title, e.position, e.role) || "Role", sub: (e) => txt(e.company, e.organization) },
+        { key: "organizations", icon: "🎟️", ranged: true, title: (e) => txt(e.organization, e.name) || "Organization", sub: (e) => txt(e.role) || "Member" },
+        { key: "awards", icon: "🏆", ranged: false, title: (e) => txt(e.title, e.name) || "Award", sub: (e) => txt(e.issuer, e.organization) },
+        { key: "certifications", icon: "📜", ranged: false, title: (e) => txt(e.name, e.title) || "Certification", sub: (e) => txt(e.issuer, e.organization) },
+        { key: "trainings", icon: "🎓", ranged: false, title: (e) => txt(e.title, e.name) || "Training", sub: (e) => txt(e.issuer, e.role) },
+        { key: "projects", icon: "🛠️", ranged: true, title: (e) => txt(e.title, e.name) || "Project", sub: (e) => txt(e.role, e.tech) },
+    ];
+
     const items: AchievementsData["achievements"] = [];
-    const push = (title: string, description: string, icon: string) => {
-        if (items.find((x) => x.title === title)) return;
-        items.push({ id: `ach-${items.length}`, title, description, year, icon, color: colors[items.length % colors.length] });
-    };
-    d.strengths.forEach((s) => push(s.area, s.evidence[0] ?? "A standout strength this year.", compIcon(s.area)));
-    d.competencies.filter((c) => c.level === "Advanced").forEach((c) => push(c.name, c.diagnosis, "🏆"));
-    const ev = d.student.evidenceCounts as Record<string, number>;
-    const evTotal = Object.values(ev).reduce((a, b) => a + b, 0);
-    if (evTotal > 0) push("Receipts on file", `${evTotal} pieces of evidence backing the profile.`, "🧾");
-    if (typeof ev.awards === "number" && ev.awards > 0) push("Award-winner", `${ev.awards} award${ev.awards > 1 ? "s" : ""} earned.`, "🥇");
-    // always have at least a couple
-    if (items.length === 0) push("Showed up all year", "Consistency is the quiet superpower.", "🔥");
+    for (const cat of CATS) {
+        const list = Array.isArray(ev[cat.key]) ? ev[cat.key] : [];
+        for (const e of list) {
+            const isRanged = cat.ranged || e.start_date !== undefined || e.end_date !== undefined;
+            let keep = false;
+            let display = "";
+            if (isRanged) {
+                const start = parseLooseDate(e.start_date ?? e.date) ?? EPOCH;
+                const ongoing = e.end_date === null || e.end_date === undefined;
+                const end = ongoing ? FAR_FUTURE : parseLooseDate(e.end_date) ?? start;
+                keep = start <= win.end && end >= win.start; // overlaps the school year
+                display = ongoing ? `${txt(e.start_date)} – Present`.trim() : txt(e.start_date) ? `${txt(e.start_date)} – ${txt(e.end_date)}` : txt(e.date);
+            } else {
+                const dt = parseLooseDate(e.date ?? e.issue_date ?? e.year);
+                keep = dt != null && dt >= win.start && dt <= win.end;
+                display = txt(e.date, e.issue_date);
+            }
+            if (!keep) continue;
+            const title = cat.title(e);
+            if (items.find((x) => x.title === title)) continue;
+            items.push({
+                id: `ach-${items.length}`,
+                title,
+                description: [cat.sub(e), display].filter(Boolean).join(" · ") || "Logged this school year.",
+                year: win.label,
+                icon: cat.icon,
+                color: colors[items.length % colors.length],
+            });
+        }
+    }
+
+    if (items.length === 0) {
+        items.push({ id: "ach-0", title: "A fresh chapter", description: `No badges logged for ${win.label} yet — the year's still young.`, year: win.label, icon: "🌱", color: colors[0] });
+    }
     return { achievements: items.slice(0, 8) };
 }

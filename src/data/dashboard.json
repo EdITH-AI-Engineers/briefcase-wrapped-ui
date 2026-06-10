@@ -17,14 +17,27 @@
       "yearLevel": 3,
       "sparsity": "Sparse",
       "evidenceCounts": {
-        "skills": 6,
-        "projects": 0,
-        "experience": 0,
-        "education": 0,
-        "certifications": 0,
-        "awards": 0,
-        "trainings": 1,
-        "organizations": 1
+        "projects": [],
+        "experience": [],
+        "education": [],
+        "certifications": [],
+        "awards": [],
+        "trainings": [
+          {
+            "role": "Attendee",
+            "title": "Webinar: Introduction to Cloud Computing",
+            "issuer": "TechHub Manila",
+            "date": "March 15, 2024"
+          }
+        ],
+        "organizations": [
+          {
+            "organization": "Computer Science Society",
+            "role": "Member",
+            "start_date": "August 2023",
+            "end_date": null
+          }
+        ]
       }
     },
     "overview": {
