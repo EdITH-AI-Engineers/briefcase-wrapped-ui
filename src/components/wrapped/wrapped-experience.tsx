@@ -6,7 +6,6 @@ import { WrappedIntro } from "@/components/intro/intro";
 import { BriefcaseLoader } from "@/components/intro/loader";
 import { StartGate } from "@/components/intro/start-gate";
 import gsap from "gsap";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { WrappedCompetencies } from "@/components/competencies/competencies";
 import { WrappedSkills } from "@/components/skills/skills";
@@ -17,6 +16,10 @@ import { playSection, fadeOutCurrent } from "@/lib/audio";
 import type { CompetenciesData, SkillsData, ActionPlanData, AchievementsData, ArchetypeData } from "@/lib/scene-data";
 
 const sections: SectionName[] = ["intro", "achievements", "competencies", "skills", "actionPlan", "summary", "end"];
+
+// The full career-readiness report lives in a separate app. When the outro ends,
+// hand off to it. Override per-environment with NEXT_PUBLIC_REPORT_URL.
+const REPORT_URL = process.env.NEXT_PUBLIC_REPORT_URL ?? "http://localhost:3001";
 
 export type SceneData = {
     competencies: CompetenciesData;
@@ -31,7 +34,6 @@ type PendingAnim = { key: number; direction: 1 | -1 } | null;
 
 export function WrappedExperience({ userName, sceneData }: { userName: string; sceneData: SceneData }) {
     const user = { name: userName };
-    const router = useRouter();
 
     const [layers, setLayers] = useState<LayerEntry[]>([{ key: 0, section: "intro" }]);
     const [selectedSection, setSelectedSection] = useState<SectionName>("intro");
@@ -84,8 +86,8 @@ export function WrappedExperience({ userName, sceneData }: { userName: string; s
     const finish = useCallback(() => {
         setLeaving(true);
         fadeOutCurrent({ fadeMs: 1100 });
-        window.setTimeout(() => router.push("/"), 950);
-    }, [router]);
+        window.setTimeout(() => { window.location.href = REPORT_URL; }, 950);
+    }, []);
 
     const handleComplete = useCallback(() => {
         if (selectedSectionRef.current === "end") finish();
